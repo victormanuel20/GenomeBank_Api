@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GenomeBankApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GenomeBankApiApplication.class, args);
+
+        SpringApplication.run(GenomeBankApiApplication.class, args);
+        System.out.println("GenomeBankApiApplication started");
 	}
 
 }
