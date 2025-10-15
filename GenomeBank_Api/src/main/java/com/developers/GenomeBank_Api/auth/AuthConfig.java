@@ -1,6 +1,6 @@
 package com.developers.GenomeBank_Api.auth;
 
-import com.developers.GenomeBank_Api.repositorios.UsuarioRepository;
+import com.developers.GenomeBank_Api.repositories.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class AuthConfig {
     /**
      * Repositorio para la gestión de usuarios en la autenticación.
      */
-    private final UsuarioRepository usuarioRepository;
+    private final UsersRepository usersRepository;
 
     /**
      * Bean para la codificación de contraseñas usando BCrypt.
@@ -39,7 +39,7 @@ public class AuthConfig {
      */
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> usuarioRepository.findByUsername(username)
+        return username -> usersRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
 }
