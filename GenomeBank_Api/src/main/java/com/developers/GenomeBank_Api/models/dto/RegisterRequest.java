@@ -8,6 +8,7 @@ import java.util.List;
 public class RegisterRequest {
     private String username;
     private String password;
+    private String email;
     // Optional list of role names, e.g. ["USER","ADMIN"]
     private List<String> roles;
 }

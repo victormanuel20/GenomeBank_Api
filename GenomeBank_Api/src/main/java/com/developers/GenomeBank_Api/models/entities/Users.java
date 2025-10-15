@@ -28,10 +28,13 @@ public class Users implements UserDetails { // Implementa UserDetails para integ
     @Column(nullable = false, unique = true, length = 100) // Username único y obligatorio
     private String username; // Nombre de usuario
 
+    @Column(nullable = false, unique = true, length = 150)
+    private String email;
+
     @Column(nullable = false) // Contraseña obligatoria
     private String password; // Contraseña encriptada
 
-    private Boolean activo = true; // Indica si el usuario está activo
+    private Boolean active = true; // Indica si el usuario está activo
 
     @ManyToMany(fetch = FetchType.EAGER) // Relación muchos a muchos con roles, carga inmediata
     @JoinTable(
@@ -54,5 +57,5 @@ public class Users implements UserDetails { // Implementa UserDetails para integ
     @Override public boolean isAccountNonExpired() { return true; } // La cuenta nunca expira
     @Override public boolean isAccountNonLocked() { return true; } // La cuenta nunca se bloquea
     @Override public boolean isCredentialsNonExpired() { return true; } // Las credenciales nunca expiran
-    @Override public boolean isEnabled() { return activo; } // El usuario está habilitado si activo es true
+    @Override public boolean isEnabled() { return active; } // El usuario está habilitado si activo es true
 }

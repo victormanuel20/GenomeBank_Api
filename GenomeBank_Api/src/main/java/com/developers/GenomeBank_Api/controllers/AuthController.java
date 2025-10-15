@@ -107,6 +107,7 @@ public class AuthController {
 
         Users user = new Users();
         user.setUsername(req.getUsername());
+        user.setEmail(req.getEmail());
         user.setPassword(passwordEncoder.encode(req.getPassword()));
         user.setRoles(roleEntities);
 
