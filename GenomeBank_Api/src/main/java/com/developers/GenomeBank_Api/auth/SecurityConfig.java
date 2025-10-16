@@ -93,7 +93,7 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration(); // Crea la configuración CORS
         // Permite peticiones desde estos orígenes (URLs del frontend)
-        cfg.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:4200", "http://127.0.0.1:3000"));
+        cfg.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:4200", "http://127.0.0.1:3000","http://localhost:*"));
         // Permite estos métodos HTTP
         cfg.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         // Permite estas cabeceras en las peticiones

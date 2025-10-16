@@ -21,6 +21,7 @@ public class AuthConfig {
     /**
      * Repositorio para la gestión de usuarios en la autenticación.
      */
+
     private final UsersRepository usersRepository;
 
     /**
