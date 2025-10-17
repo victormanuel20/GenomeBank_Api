@@ -1,6 +1,7 @@
 package com.developers.GenomeBank_Api.controllers;
 
 import com.developers.GenomeBank_Api.auth.JwtService;
+import com.developers.GenomeBank_Api.exceptions.InvalidEmailException;
 import com.developers.GenomeBank_Api.models.dto.RegisterRequest;
 import com.developers.GenomeBank_Api.models.entities.Role;
 import com.developers.GenomeBank_Api.models.entities.Users;
@@ -66,11 +67,12 @@ public class AuthController {
 
         var user = usuarioRepo.findByUsername(username).orElseThrow();
         var roles = user.getRoles().stream().map(Role::getName).toList();
-        String token = null;
 
-        if (email != null){
-            token = jwt.generate(user.getUsername(), roles);
+        if (email == null || !email.equals(user.getEmail())) {
+            throw new InvalidEmailException("El correo electrónico no coincide con el registrado.");
         }
+
+        String token = jwt.generate(user.getUsername(), roles);
 
         return Map.of(
                 "access_token", token,
