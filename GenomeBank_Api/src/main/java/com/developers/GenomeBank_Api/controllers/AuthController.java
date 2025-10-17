@@ -58,6 +58,7 @@ public class AuthController {
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody Map<String, String> req) {
         String username = req.get("username");
+        String email = req.get("email");
         String password = req.get("password");
 
         // Si las credenciales son incorrectas, lanza AuthenticationException → 401 por defecto
@@ -65,7 +66,11 @@ public class AuthController {
 
         var user = usuarioRepo.findByUsername(username).orElseThrow();
         var roles = user.getRoles().stream().map(Role::getName).toList();
-        String token = jwt.generate(user.getUsername(), roles);
+        String token = null;
+
+        if (email != null){
+            token = jwt.generate(user.getUsername(), roles);
+        }
 
         return Map.of(
                 "access_token", token,
