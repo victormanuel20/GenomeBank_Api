@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controlador REST para la gestión de genes.
@@ -94,6 +95,39 @@ public class GeneController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    /**
+     * Obtiene la secuencia del gen
+     * @param id identificador del gen
+     * @return ResponseEntity con la secuencia o 404 si no encuentra
+     */
+    @GetMapping("/{id}/sequence")
+    public ResponseEntity<Map<String, String>> getGeneSequence(@PathVariable Long id) {
+        return geneService.getGeneSequence(id)
+                .map(sequence -> ResponseEntity.ok(Map.of("sequence", sequence)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Actualiza la secuencia del gen
+     * @param id identificador del gen
+     * @param updateGeneSequenceInDTO nueva secuencia a actualizar
+     * @return ResponseEntity con el gen actualizado o 404 si no se encuentra
+     */
+    @PutMapping("/{id}/sequence")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<GeneOutDTO> updateGeneSequence(
+            @PathVariable Long id,
+            @RequestBody UpdateGeneSequenceInDTO updateGeneSequenceInDTO) {
+        try {
+            return geneService.updateGeneSequence(id, updateGeneSequenceInDTO)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

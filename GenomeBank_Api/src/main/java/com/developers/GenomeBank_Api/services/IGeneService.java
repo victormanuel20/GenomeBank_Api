@@ -21,4 +21,8 @@ public interface IGeneService {
     Optional<GeneOutDTO> updateGene(Long id, UpdateGeneInDTO updateGeneInDTO);
 
     boolean deleteGene(Long id);
+
+    Optional<String> getGeneSequence(Long id);
+
+    Optional<GeneOutDTO> updateGeneSequence(Long id, UpdateGeneSequenceInDTO updateGeneSequenceInDTO);
 }

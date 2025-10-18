@@ -182,6 +182,43 @@ public class GeneService implements IGeneService {
         }
         return false;
     }
+
+
+    /**
+     * Obtiene la secuencia de un gen
+     * @param id gen identificador
+     * @return Optional con la secuencia o vacio si no la encuetnra
+     */
+    @Override
+    public Optional<String> getGeneSequence(Long id) {
+        return geneRepository.findById(id)
+                .map(Gene::getSequence);
+    }
+
+    /**
+     * Actualiza la secuencia de un gen
+     * @param id identificador del gen
+     * @param updateGeneSequenceInDTO nueva secuencia
+     * @return Optional con el gen actualizado o vacio
+     */
+    @Override
+    public Optional<GeneOutDTO> updateGeneSequence(Long id, UpdateGeneSequenceInDTO updateGeneSequenceInDTO) {
+        return geneRepository.findById(id)
+                .map(existingGene -> {
+                    long expectedLength = existingGene.getEndPosition() - existingGene.getStartPosition();
+                    if (updateGeneSequenceInDTO.getSequence().length() != expectedLength) {
+                        throw new IllegalArgumentException("Sequence length must match the gene position range");
+                    }
+                    existingGene.setSequence(updateGeneSequenceInDTO.getSequence());
+                    Gene savedGene = geneRepository.save(existingGene);
+                    return convertToGeneOutDTO(savedGene);
+                });
+    }
+
+
+
+
+
     // Convierte la entidad en un DTO
     private GeneOutDTO convertToGeneOutDTO(Gene gene) {
         GeneOutDTO dto = new GeneOutDTO();
