@@ -1,9 +1,7 @@
 package com.developers.GenomeBank_Api.services.impl;
 
 import com.developers.GenomeBank_Api.exceptions.GenomeNotFoundException;
-import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeInDTO;
-import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeOutDTO;
-import com.developers.GenomeBank_Api.models.dto.genome.DeleteGenomeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.genome.*;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 import com.developers.GenomeBank_Api.models.entities.Species;
 import com.developers.GenomeBank_Api.repositories.GenomeRepository;
@@ -11,6 +9,8 @@ import com.developers.GenomeBank_Api.repositories.SpeciesRepository;
 import com.developers.GenomeBank_Api.services.IGenomeService;
 import com.developers.GenomeBank_Api.services.ISpeciesService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Implementación del servicio de genomas.
@@ -80,6 +80,60 @@ public class GenomeService implements IGenomeService {
 
     }
 
+    @Override
+    public List<GenomeOutDTO> getGenomes(GetGenomesInDTO inDTO) {
+        return List.of();
+    }
+
+    /*
+    @Override
+    public List<GenomeOutDTO> getGenomes(GetGenomesInDTO inDTO) {
+        List<Genome> genomes;
+
+        // ¿Viene speciesId en el query param?
+        if (inDTO.getSpeciesId() != null) {
+            Long speciesId = inDTO.getSpeciesId();
+
+            // 1) Si la especie NO existe → 404 con tu GenomeNotFoundException
+            if (!speciesRepository.existsById(speciesId)) {
+                throw new GenomeNotFoundException("Species not found with id: " + speciesId);
+            }
+
+            // 2) Traer genomas por especie
+            genomes = genomeRepository.findBySpeciesId(speciesId);
+
+            // 3) Si no hay genomas para esa especie → 404
+            if (genomes.isEmpty()) {
+                throw new GenomeNotFoundException("No genomes found for species id: " + speciesId);
+            }
+
+        } else {
+            // Sin filtro → traer todos
+            genomes = genomeRepository.findAll();
+
+            // Si la base está vacía → 404
+            if (genomes.isEmpty()) {
+                throw new GenomeNotFoundException("No genomes found in the database.");
+            }
+        }
+
+        // Mapear a DTOs de salida (sin exponer Entities)
+        return genomes.stream()
+                .map(this::toOutDTO)
+                .toList();
+    }
+
+    private GenomeOutDTO toOutDTO(Genome genome) {
+        GenomeOutDTO dto = new GenomeOutDTO();
+        dto.setId(genome.getId());
+        dto.setVersion(genome.getVersion());
+        dto.setSpeciesId(genome.getSpecies().getId());
+        dto.setSpeciesScientificName(genome.getSpecies().getScientificName());
+        dto.setSpeciesCommonName(genome.getSpecies().getCommonName());
+        return dto;
+    }
+
+     */
 
 
 }

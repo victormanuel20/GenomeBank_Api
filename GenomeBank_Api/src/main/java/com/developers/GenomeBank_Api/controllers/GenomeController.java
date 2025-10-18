@@ -1,12 +1,12 @@
 package com.developers.GenomeBank_Api.controllers;
 
-import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeInDTO;
-import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeOutDTO;
-import com.developers.GenomeBank_Api.models.dto.genome.DeleteGenomeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.genome.*;
 import com.developers.GenomeBank_Api.services.IGenomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controlador REST para la gestión de genomas.
@@ -61,10 +61,17 @@ public class GenomeController {
     }
 
 
+    @GetMapping("")
+    public ResponseEntity<List<GenomeOutDTO>> getGenomes(
+            @RequestParam(required = false) Long speciesId) {
 
+        GetGenomesInDTO inDTO = new GetGenomesInDTO();
+        inDTO.setSpeciesId(speciesId);
 
+        List<GenomeOutDTO> response = genomeService.getGenomes(inDTO);
 
-
+        return ResponseEntity.ok(response);
+    }
 
 
 

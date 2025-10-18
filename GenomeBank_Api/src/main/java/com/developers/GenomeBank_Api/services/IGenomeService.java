@@ -1,8 +1,6 @@
 package com.developers.GenomeBank_Api.services;
 
-import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeInDTO;
-import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeOutDTO;
-import com.developers.GenomeBank_Api.models.dto.genome.DeleteGenomeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.genome.*;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 
 import java.util.List;
@@ -13,9 +11,10 @@ import java.util.Optional;
  * Define las operaciones de negocio relacionadas con la entidad Genome.
  */
 public interface IGenomeService {
-    // Create a new genome (ADMIN only)
+
     public CreateGenomeOutDTO createGenome(CreateGenomeInDTO createGenomeInDTO);
     public DeleteGenomeOutDTO deleteGenome(Long id);
+    List<GenomeOutDTO> getGenomes(GetGenomesInDTO inDTO);
 
     /*
     // Retrieve all genomes or filter by species
