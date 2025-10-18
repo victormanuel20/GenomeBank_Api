@@ -1,0 +1,32 @@
+package com.developers.GenomeBank_Api.models.dto;
+
+import lombok.Data;
+import java.util.List;
+
+@Data
+public class outDTOListChromosome extends ResutDTO {
+    private List<ChromosomeDTO> chromosomes;
+
+    @Data
+    public static class ChromosomeDTO {
+        private Long id;
+        private String name;
+        private int length;
+        private String sequence;
+        private GenomeDTO genome;
+
+        @Data
+        public static class GenomeDTO {
+            private Long id;
+            private String version;
+            private SpeciesDTO species;
+
+            @Data
+            public static class SpeciesDTO {
+                private Long id;
+                private String scientificName;
+                private String commonName;
+            }
+        }
+    }
+}
