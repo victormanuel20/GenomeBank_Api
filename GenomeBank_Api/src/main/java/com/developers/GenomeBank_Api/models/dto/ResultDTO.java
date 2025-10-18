@@ -7,6 +7,6 @@ import lombok.Data;
  */
 @Data
 public class ResultDTO {
-    private boolean isSuccess;    // true if the operation was successful
-    private String ErrorMessage;   // contains the error message if it failed
+    private boolean successful;    // true if the operation was successful
+    private String errorMessage;   // contains the error message if it failed
 }
