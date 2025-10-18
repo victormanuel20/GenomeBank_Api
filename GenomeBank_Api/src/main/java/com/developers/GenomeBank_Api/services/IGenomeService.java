@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface IGenomeService {
     // Create a new genome (ADMIN only)
     public CreateGenomeOutDTO createGenome(CreateGenomeInDTO createGenomeInDTO);
-
+    public boolean deleteGenome(Long id);
 
     /*
     // Retrieve all genomes or filter by species

@@ -61,4 +61,9 @@ public class GenomeService implements IGenomeService {
         return outDTO;
     }
 
+    @Override
+    public boolean deleteGenome(Long id) {
+        return false;
+    }
+
 }

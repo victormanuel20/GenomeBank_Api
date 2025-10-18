@@ -24,4 +24,14 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(GenomeNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleGenomeNotFound(GenomeNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(
+                        "error", "Genome not found",
+                        "message", ex.getMessage()
+                ));
+    }
+
 }
