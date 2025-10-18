@@ -32,12 +32,11 @@ public class GeneService implements IGeneService {
 
 
     /**
-     * Constructor que inyecta el repositorio de genes.
-     * <p>
-     * * @param geneRepository repository for genes
-     * * @param geneFunctionRepository repository for gene-function associations
-     * * @param chromosomeService service for chromosome operations
-     * * @param functionService service for function operations
+     * Constructor que inyecta el repositorio de genes
+     * * @param geneRepository repositorio para genes
+     * * @param geneFunctionRepository repositorio para las asociaciones de gen funcion for
+     * * @param chromosomeService para las opreciones de cromosomas
+     * * @param functionService servicio para operaciones de funcion
      */
     public GeneService(GeneRepository geneRepository, GeneFunctionRepository geneFunctionRepository,
                        IChromosomeService chromosomeService, IFunctionService functionService) {
@@ -91,7 +90,7 @@ public class GeneService implements IGeneService {
         Gene savedGene = geneRepository.save(gene);
 
         if (savedGene.getId() != null) {
-            result.isSuccess(true);
+            result.setSuccess(true);
             result.setGeneId(savedGene.getId());
         }
 
@@ -100,9 +99,9 @@ public class GeneService implements IGeneService {
 
 
     /**
-     * Gets a specific gene by ID.
-     * @param id gene identifier
-     * @return Optional with the gene or empty if not found
+     * Obtiene un gen especifico por el id
+     * @param id identificador del gen
+     * @return Optional con el gen o vacio
      */
     @Override
     public Optional <GeneWithSequenceOutDTO> getGeneById(Long id) {
@@ -112,13 +111,13 @@ public class GeneService implements IGeneService {
 
 
     /**
-     * Gets all genes with optional filters.
+     * Obtiene todos los genes con los ftilros adicionales
      *
-     * @param chromosomeId filter by chromosome
-     * @param symbol       filter by symbol
-     * @param start        filter by start position
-     * @param end          filter by end position
-     * @return list of genes
+     * @param chromosomeId filtrado  por chromosome
+     * @param symbol        filtrado  porsymbol
+     * @param start         filtrado  por posicion inicial
+     * @param end          filtrado  por posicion final
+     * @return Lista del todos los genes
      */
     @Override
     public List<GeneOutDTO> getAllGenes(Long chromosomeId, String symbol, Integer start, Integer end) {

@@ -49,9 +49,9 @@ public class GeneController {
 
 
     /**
-     * Creates a new gene.
-     * @param createGeneInDTO gene data
-     * @return ResponseEntity with the creation result
+     * Crea un nuevo gen.
+     * @param createGeneInDTO data del gen
+     * @return ResponseEntity con el resultado de la creacion
      */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")

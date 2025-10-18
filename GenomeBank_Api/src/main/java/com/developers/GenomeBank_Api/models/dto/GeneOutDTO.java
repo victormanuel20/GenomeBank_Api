@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class GeneOutDTO {
-    private Integer id;
+    private Long id;
     private String symbol;
     private int startPosition;
     private int endPosition;
     private String strand;
-    private Integer chromosomeId;
+    private Long chromosomeId;
     private String chromosomeName;
 }
