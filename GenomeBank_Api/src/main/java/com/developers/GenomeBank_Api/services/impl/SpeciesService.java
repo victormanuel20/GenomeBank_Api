@@ -110,4 +110,10 @@ public class SpeciesService implements ISpeciesService {
         return dto;
     }
 
+    @Override
+    public boolean existsSpecies(Long id) {
+        return speciesRepository.existsById(id);
+    }
+
+
 }

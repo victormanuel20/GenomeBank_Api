@@ -15,4 +15,5 @@ public interface ISpeciesService {
     public List<GetAllSpeciesOutDTO> getAllSpecies();
     public GetSpeciesByIdOutDTO getSpeciesById(Long id);
     public CreateSpeciesOutDTO createSpecies(CreateSpeciesInDTO createSpeciesInDTO);
+    public boolean existsSpecies(Long id);
 }
