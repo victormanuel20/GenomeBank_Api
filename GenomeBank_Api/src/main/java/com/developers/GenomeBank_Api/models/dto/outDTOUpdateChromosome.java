@@ -1,6 +1,11 @@
 package com.developers.GenomeBank_Api.models.dto;
 
-public class outDTOUpdateChromosome {
+
+import lombok.Data;
+
+@Data
+
+public class outDTOUpdateChromosome extends ResutDTO{
     private Long id;
     private String name;
     private int length;

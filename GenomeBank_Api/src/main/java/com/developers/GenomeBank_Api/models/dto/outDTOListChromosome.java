@@ -1,8 +1,11 @@
 package com.developers.GenomeBank_Api.models.dto;
 
-import java.util.List;
 
-public class outDTOListChromosome {
+import lombok.Data;
+
+import java.util.List;
+@Data
+public class outDTOListChromosome extends ResutDTO{
 
     private List<ChromosomeDTO> chromosomes;
 

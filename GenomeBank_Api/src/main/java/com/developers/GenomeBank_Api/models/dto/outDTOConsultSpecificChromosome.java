@@ -1,6 +1,9 @@
 package com.developers.GenomeBank_Api.models.dto;
 
-public class outDTOConsultSpecificChromosome {
+import lombok.Data;
+
+@Data
+public class outDTOConsultSpecificChromosome extends ResutDTO{
 
     private Long id;
     private String name;

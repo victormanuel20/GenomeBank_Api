@@ -1,6 +1,10 @@
 package com.developers.GenomeBank_Api.models.dto;
 
-public class outDTOCreateChromosome {
+import lombok.Data;
+
+@Data
+
+public class outDTOCreateChromosome extends ResutDTO{
 
     private Long id;  // ID del cromosoma
     private String name;  // Nombre del cromosoma
