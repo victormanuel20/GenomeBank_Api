@@ -12,10 +12,8 @@ import java.util.Optional;
  */
 public interface IGeneService {
 
-
-    public List<Gene> getGenes();
-    public Optional<Gene> getGene(Long id);
-    public Gene addGene(CreateGeneInDTO createGeneInDTO);
-
+    CreateGeneOutDTO createGene(CreateGeneInDTO createGeneInDTO);
+    List<GeneOutDTO> getAllGenes(Long chromosomeId, String symbol, Long start, Long end);
+    Optional<GeneWithSequenceOutDTO> getGeneById(Long id);
 
 }
