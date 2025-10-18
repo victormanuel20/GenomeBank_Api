@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class ResutDTO {
-    private boolean isSucess;
-    private String ErrorMessage;
+    private boolean success;
+    private String errorMessage;
 
 }
