@@ -8,6 +8,6 @@ import lombok.Data;
  */
 @Data
 public class ResultDTO {
-    private boolean isExitoso;
-    private String mensajeError;
+    private boolean isSucess;
+    private String ErrorMessage;
 }

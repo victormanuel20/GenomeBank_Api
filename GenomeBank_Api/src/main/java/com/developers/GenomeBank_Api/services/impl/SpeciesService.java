@@ -64,7 +64,7 @@ public class SpeciesService implements ISpeciesService {
     public GetSpeciesByIdOutDTO getSpeciesById(Long id) {
         // findById() busca el id de la especie, no el DTO
         Species species = speciesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Species found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Species not found with id: " + id));
 
         // Se crea el DTO con el id de la especie encontrada
         GetSpeciesByIdOutDTO dto = new GetSpeciesByIdOutDTO();
@@ -72,11 +72,11 @@ public class SpeciesService implements ISpeciesService {
         dto.setCommonName(species.getCommonName());
 
         if (species.getId() != null) {
-            dto.setExitoso(true);
+            dto.setSucess(true);
         }
         else {
-            dto.setExitoso(false);
-            dto.setMensajeError("Error al encontar especie por id: " + id);
+            dto.setSucess(false);
+            dto.setErrorMessage("Error al encontar especie por id: " + id);
         }
 
         return dto;
@@ -94,14 +94,17 @@ public class SpeciesService implements ISpeciesService {
         Species species = new Species();
         species.setScientificName(createSpeciesInDTO.getScientificName());
         species.setCommonName(createSpeciesInDTO.getCommonName());
-        this.speciesRepository.save(species);
 
-        if (species.getId() != null) {
-            dto.setExitoso(true);
+        if (species.getScientificName() != null &&
+                species.getCommonName() != null) {
+
+            this.speciesRepository.save(species);
+            dto.setSucess(true);
         }
         else {
-            dto.setExitoso(false);
-            dto.setMensajeError("Error al crear especie, no se encontró ID");
+            // Mensaje de error si encuentra uno de los campos vacíos
+            dto.setSucess(false);
+            dto.setErrorMessage("Error al crear especie");
         }
 
         return dto;
