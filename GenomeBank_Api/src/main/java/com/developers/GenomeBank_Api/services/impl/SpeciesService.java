@@ -1,5 +1,6 @@
 package com.developers.GenomeBank_Api.services.impl;
 
+import com.developers.GenomeBank_Api.repositories.SpeciesRepository;
 import com.developers.GenomeBank_Api.services.ISpeciesService;
 import org.springframework.stereotype.Service;
 
@@ -10,4 +11,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SpeciesService implements ISpeciesService {
+
+    private final SpeciesRepository speciesRepository;
+
+    public SpeciesService(SpeciesRepository speciesRepository) {
+        this.speciesRepository = speciesRepository;
+    }
+
+    @Override
+    public boolean existsSpecies(Long id) {
+        return speciesRepository.existsById(id);
+    }
+
 }

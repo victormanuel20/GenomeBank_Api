@@ -5,4 +5,7 @@ package com.developers.GenomeBank_Api.services;
  * Establece las operaciones necesarias para crear, consultar, actualizar y eliminar Species.
  */
 public interface ISpeciesService {
+
+   public boolean existsSpecies(Long id);
+
 }
