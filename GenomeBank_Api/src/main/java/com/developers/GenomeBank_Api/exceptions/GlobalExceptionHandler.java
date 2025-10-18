@@ -24,4 +24,34 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(SpeciesNotUpdatedException.class)
+    public ResponseEntity<Map<String, Object>> handleNotUpdatedSpecies(SpeciesNotUpdatedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error", "Error al actualizar especie",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(SpeciesNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFoundSpecies(SpeciesNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error", "Error al eliminar especie",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(SpeciesNotCreatedException.class)
+    public ResponseEntity<Map<String, Object>> handleNotCreated(SpeciesNotCreatedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error", "Error al crear especie",
+                        "message", ex.getMessage()
+                ));
+    }
+
 }

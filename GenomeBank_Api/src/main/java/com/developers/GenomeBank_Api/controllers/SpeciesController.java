@@ -1,9 +1,6 @@
 package com.developers.GenomeBank_Api.controllers;
 
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.CreateSpeciesInDTO;
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.CreateSpeciesOutDTO;
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.GetSpeciesByIdOutDTO;
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.GetAllSpeciesOutDTO;
+import com.developers.GenomeBank_Api.models.dto.speciesDtos.*;
 import com.developers.GenomeBank_Api.services.ISpeciesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,6 +65,32 @@ public class SpeciesController {
                                                                       createSpeciesInDTO) {
 
         return ResponseEntity.ok(this.speciesService.createSpecies(createSpeciesInDTO));
+    }
+
+    /**
+     * Actualiza la especie con DTO
+     * @param id
+     * @param updateSpeciesInDTO
+     * @return ResponseEntity
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<UpdateSpeciesOutDTO> updateSpecies(@PathVariable Long id,
+                                                             @RequestBody UpdateSpeciesInDTO
+                                                                     updateSpeciesInDTO) {
+
+        return ResponseEntity.ok(this.speciesService.updateSpecies(id, updateSpeciesInDTO));
+    }
+
+    /**
+     * Elimina la especie con DTO
+     * @param id
+     * @return ResponseEntity
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DeleteSpeciesOutDTO> deleteSpecies(@PathVariable Long id) {
+        return ResponseEntity.ok(this.speciesService.deleteSpecies(id));
     }
 
 }
