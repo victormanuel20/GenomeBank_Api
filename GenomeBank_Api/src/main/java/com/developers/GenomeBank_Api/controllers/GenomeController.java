@@ -38,7 +38,7 @@ public class GenomeController {
 
         CreateGenomeOutDTO response = this.genomeService.createGenome(createGenomeInDTO);
 
-        if (!response.isSuccess()) {
+        if (!response.isSucess()) {
 
             return ResponseEntity.badRequest().body(response); // HTTP 400
         }

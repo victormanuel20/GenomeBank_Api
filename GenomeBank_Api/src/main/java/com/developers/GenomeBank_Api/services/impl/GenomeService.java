@@ -37,7 +37,7 @@ public class GenomeService implements IGenomeService {
 
 
         if (!this.speciesService.existsSpecies(createGenomeInDTO.getSpeciesId())) {
-            outDTO.setSuccess(false);
+            outDTO.setSucess(false);
             outDTO.setErrorMessage("The specified species does not exist.");
             return outDTO;
         }
@@ -53,7 +53,7 @@ public class GenomeService implements IGenomeService {
 
         Genome savedGenome = this.genomeRepository.save(genome);
 
-        outDTO.setSuccess(true);
+        outDTO.setSucess(true);
         outDTO.setId(savedGenome.getId());
         outDTO.setVersion(savedGenome.getVersion());
         outDTO.setSpeciesId(savedGenome.getSpecies().getId());
