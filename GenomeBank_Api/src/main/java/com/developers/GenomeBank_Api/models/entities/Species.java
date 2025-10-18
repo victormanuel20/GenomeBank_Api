@@ -30,6 +30,11 @@ public class Species {
     @Column(name="common_name")
     private String commonName;
 
+    /*@OneToMany(mappedBy = "species")
+    private Set<Genome> genomes = new HashSet<>();*/
+
     @OneToMany(mappedBy = "species")
     private List<Genome> genomes;
+
+
 }
