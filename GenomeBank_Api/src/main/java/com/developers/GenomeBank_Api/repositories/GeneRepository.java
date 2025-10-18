@@ -37,7 +37,7 @@ public interface GeneRepository extends JpaRepository<Gene, Long> {
     List<Gene> findByFilters(
             @Param("chromosomeId") Long chromosomeId,
             @Param("symbol") String symbol,
-            @Param("start") Long start,
-            @Param("end") Long end
+            @Param("start") Integer start,
+            @Param("end") Integer end
     );
 }

@@ -1,8 +1,10 @@
 package com.developers.GenomeBank_Api.services.impl;
 
 import com.developers.GenomeBank_Api.models.dto.CreateGeneInDTO;
-import com.developers.GenomeBank_Api.models.dto.AddGeneOutDTO;
+import java.util.stream.Collectors;
 import com.developers.GenomeBank_Api.models.dto.CreateGeneOutDTO;
+import com.developers.GenomeBank_Api.models.dto.GeneOutDTO;
+import com.developers.GenomeBank_Api.models.dto.GeneWithSequenceOutDTO;
 import com.developers.GenomeBank_Api.models.entities.Chromosome;
 import com.developers.GenomeBank_Api.models.entities.Gene;
 import com.developers.GenomeBank_Api.repositories.GeneFunctionRepository;
@@ -31,7 +33,7 @@ public class GeneService implements IGeneService {
 
     /**
      * Constructor que inyecta el repositorio de genes.
-
+     * <p>
      * * @param geneRepository repository for genes
      * * @param geneFunctionRepository repository for gene-function associations
      * * @param chromosomeService service for chromosome operations
@@ -47,15 +49,15 @@ public class GeneService implements IGeneService {
     }
 
     @Override
-    public CreateGeneOutDTO addGene(CreateGeneInDTO createGeneInDTO){
+    public CreateGeneOutDTO createGene(CreateGeneInDTO createGeneInDTO) {
 
         CreateGeneOutDTO result = new CreateGeneOutDTO();
-        if(!this.chromosomeService.existChromosome(createGeneInDTO.getChromosome())){
+        if (!this.chromosomeService.existChromosome(createGeneInDTO.getChromosome())) {
             result.setErrorMessage("The chromosome does not exist ");
             return result;
         }
 
-            //Valida la hebra + / -
+        //Valida la hebra + / -
         if (!"+".equals(createGeneInDTO.getStrand()) && !"-".equals(createGeneInDTO.getStrand())) {
             result.setErrorMessage("Strand must be '+' or '-'");
             return result;
@@ -70,7 +72,7 @@ public class GeneService implements IGeneService {
         if (createGeneInDTO.getSequence() != null && !createGeneInDTO.getSequence().isEmpty()) {
             long expectedLength = createGeneInDTO.getEndPosition() - createGeneInDTO.getStartPosition();
             if (createGeneInDTO.getSequence().length() != expectedLength) {
-                result.setMensajeError("the sequence length must match the position range");
+                result.setErrorMessage("the sequence length must match the position range");
                 return result;
             }
         }
@@ -97,17 +99,70 @@ public class GeneService implements IGeneService {
     }
 
 
+    /**
+     * Gets a specific gene by ID.
+     * @param id gene identifier
+     * @return Optional with the gene or empty if not found
+     */
     @Override
-    public Optional<Gene> getGene(Long id) {
-
-        return this.geneRepository.findById(id);
-
+    public Optional <GeneWithSequenceOutDTO> getGeneById(Long id) {
+        return geneRepository.findById(id)
+                .map(this::convertToGeneWithSequenceOutDTO);
     }
 
 
+    /**
+     * Gets all genes with optional filters.
+     *
+     * @param chromosomeId filter by chromosome
+     * @param symbol       filter by symbol
+     * @param start        filter by start position
+     * @param end          filter by end position
+     * @return list of genes
+     */
     @Override
-    public List<Gene> getGenes(){
+    public List<GeneOutDTO> getAllGenes(Long chromosomeId, String symbol, Integer start, Integer end) {
+        List<Gene> genes;
 
-        return this.geneRepository.findAll();
+        if (chromosomeId != null || symbol != null || start != null || end != null) {
+            genes = geneRepository.findByFilters(chromosomeId, symbol, start, end);
+        } else {
+            genes = geneRepository.findAll();
+        }
+
+        return genes.stream()
+                .map(this::convertToGeneOutDTO)
+                .collect(Collectors.toList());
     }
+
+
+    // Convierte la entidad en un DTO
+    private GeneOutDTO convertToGeneOutDTO(Gene gene) {
+        GeneOutDTO dto = new GeneOutDTO();
+        dto.setId(gene.getId());
+        dto.setSymbol(gene.getSymbol());
+        dto.setStartPosition(gene.getStartPosition());
+        dto.setEndPosition(gene.getEndPosition());
+        dto.setStrand(gene.getStrand());
+        dto.setChromosomeId(gene.getChromosome().getId());
+        if (gene.getChromosome().getName() != null) {
+            dto.setChromosomeName(gene.getChromosome().getName());
+        }
+        return dto;
+    }
+    private GeneWithSequenceOutDTO convertToGeneWithSequenceOutDTO(Gene gene) {
+        GeneWithSequenceOutDTO dto = new GeneWithSequenceOutDTO();
+        dto.setId(gene.getId());
+        dto.setSymbol(gene.getSymbol());
+        dto.setStartPosition(gene.getStartPosition());
+        dto.setEndPosition(gene.getEndPosition());
+        dto.setStrand(gene.getStrand());
+        dto.setChromosomeId(gene.getChromosome().getId());
+        if (gene.getChromosome().getName() != null) {
+            dto.setChromosomeName(gene.getChromosome().getName());
+        }
+        dto.setSequence(gene.getSequence());
+        return dto;
+    }
+
 }

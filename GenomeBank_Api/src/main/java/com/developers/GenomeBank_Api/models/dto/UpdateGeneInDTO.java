@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class UpdateGeneInDTO {
     private String symbol;
-    private Long startPosition;
-    private Long endPosition;
+    private Integer startPosition;
+    private Integer endPosition;
     private String strand;
     private String sequence;
 }

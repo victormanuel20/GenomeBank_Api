@@ -1,8 +1,12 @@
 package com.developers.GenomeBank_Api.controllers;
 
 import com.developers.GenomeBank_Api.models.dto.CreateGeneInDTO;
-import com.developers.GenomeBank_Api.models.entities.Gene;
+import com.developers.GenomeBank_Api.models.dto.CreateGeneOutDTO;
+import com.developers.GenomeBank_Api.models.dto.GeneOutDTO;
+import com.developers.GenomeBank_Api.models.dto.GeneWithSequenceOutDTO;
+
 import com.developers.GenomeBank_Api.services.IGeneService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,25 +25,42 @@ public class GeneController {
 
     public GeneController(IGeneService geneService) {this.geneService = geneService;}
 
-    @PreAuthorize("hasAnyRole('USER')")
-    @GetMapping("/genome")
-    public ResponseEntity<List<Gene>> listGenes(){
-        List<Gene> genes = geneService.getGenes();
+    @GetMapping
+    public ResponseEntity<List<GeneOutDTO>> getAllGenes(
+            @RequestParam(required = false) Long chromosomeId,
+            @RequestParam(required = false) String symbol,
+            @RequestParam(required = false) Integer start,
+            @RequestParam(required = false) Integer end) {
+        List<GeneOutDTO> genes = geneService.getAllGenes(chromosomeId, symbol, start, end);
         return ResponseEntity.ok(genes);
     }
 
-    @PreAuthorize("hasAnyRole('USER')")
-    @GetMapping("/genomes/{id}")
-    public ResponseEntity<Gene> getGeneById(@PathVariable Long id) {
-        return geneService.getGene(id).map(ResponseEntity::ok)
+    /**
+     * Obtiene un gen especifico por ekl ID.
+     * @param id identificador del gen
+     * @return El responseEntity del gen o si no 404
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneWithSequenceOutDTO> getGeneById(@PathVariable Long id) {
+        return geneService.getGeneById(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("hasRole('ADMIN')") // Solo ADMIN puede crear
-    @PostMapping("/genomes")
-    public ResponseEntity<Gene> createGene(@RequestBody CreateGeneInDTO createGeneInDTO) {
-        return ResponseEntity.ok().body(geneService.addGene(createGeneInDTO));
-    }
 
-    
+    /**
+     * Creates a new gene.
+     * @param createGeneInDTO gene data
+     * @return ResponseEntity with the creation result
+     */
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CreateGeneOutDTO> createGene(@RequestBody CreateGeneInDTO createGeneInDTO) {
+        CreateGeneOutDTO result = geneService.createGene(createGeneInDTO);
+        if (result.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
 }
