@@ -3,10 +3,11 @@ package com.developers.GenomeBank_Api.models.dto;
 import lombok.Data;
 
 /**
- * Base DTO used for API responses to indicate success or failure.
+ * Clase para devolver el resultado de la petición en
+ * JSON
  */
 @Data
 public class ResultDTO {
-    private boolean isSuccess;    // true if the operation was successful
-    private String ErrorMessage;   // contains the error message if it failed
+    private boolean isSucess;
+    private String ErrorMessage;
 }
