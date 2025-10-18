@@ -34,4 +34,17 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrity(org.springframework.dao.DataIntegrityViolationException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT) // 409
+                .body(Map.of(
+                        "error", "Delete conflict",
+                        "message", "Cannot delete genome because it has related chromosomes or genes."
+                ));
+    }
+
+
+
 }

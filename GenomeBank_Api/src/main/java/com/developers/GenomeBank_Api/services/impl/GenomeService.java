@@ -1,7 +1,9 @@
 package com.developers.GenomeBank_Api.services.impl;
 
+import com.developers.GenomeBank_Api.exceptions.GenomeNotFoundException;
 import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeInDTO;
 import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.genome.DeleteGenomeOutDTO;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 import com.developers.GenomeBank_Api.models.entities.Species;
 import com.developers.GenomeBank_Api.repositories.GenomeRepository;
@@ -61,9 +63,23 @@ public class GenomeService implements IGenomeService {
         return outDTO;
     }
 
+
     @Override
-    public boolean deleteGenome(Long id) {
-        return false;
+    public DeleteGenomeOutDTO deleteGenome(Long id) {
+        DeleteGenomeOutDTO response = new DeleteGenomeOutDTO();
+        response.setId(id);
+
+        if (!genomeRepository.existsById(id)) {
+            throw new GenomeNotFoundException(id);
+        }
+
+        genomeRepository.deleteById(id);
+
+        response.setSucess(true);
+        return response;
+
     }
+
+
 
 }

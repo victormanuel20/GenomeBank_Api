@@ -2,13 +2,11 @@ package com.developers.GenomeBank_Api.controllers;
 
 import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeInDTO;
 import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.genome.DeleteGenomeOutDTO;
 import com.developers.GenomeBank_Api.services.IGenomeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Controlador REST para la gestión de genomas.
@@ -47,6 +45,26 @@ public class GenomeController {
 
 
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<DeleteGenomeOutDTO> deleteGenome(@PathVariable Long id) {
+
+        DeleteGenomeOutDTO response = this.genomeService.deleteGenome(id);
+
+        if (!response.isSucess()) {
+
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
+
+
 
 
 

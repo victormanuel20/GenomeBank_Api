@@ -2,6 +2,7 @@ package com.developers.GenomeBank_Api.services;
 
 import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeInDTO;
 import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.genome.DeleteGenomeOutDTO;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public interface IGenomeService {
     // Create a new genome (ADMIN only)
     public CreateGenomeOutDTO createGenome(CreateGenomeInDTO createGenomeInDTO);
-    public boolean deleteGenome(Long id);
+    public DeleteGenomeOutDTO deleteGenome(Long id);
 
     /*
     // Retrieve all genomes or filter by species
