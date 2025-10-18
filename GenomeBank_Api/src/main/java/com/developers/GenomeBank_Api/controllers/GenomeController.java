@@ -1,5 +1,12 @@
 package com.developers.GenomeBank_Api.controllers;
 
+import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeInDTO;
+import com.developers.GenomeBank_Api.models.dto.genome.CreateGenomeOutDTO;
+import com.developers.GenomeBank_Api.services.IGenomeService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,4 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/genomes")
 public class GenomeController {
+
+    private final IGenomeService genomeService;
+
+    public GenomeController(IGenomeService genomeService) {
+        this.genomeService = genomeService;
+    }
+
+    /**
+     * Endpoint to create a new Genome.
+     * Accessible only to users with ADMIN role.
+     *
+     * @param createGenomeInDTO input data (version and speciesId)
+     * @return response containing success or error details
+     */
+    @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CreateGenomeOutDTO> createGenome(@RequestBody CreateGenomeInDTO createGenomeInDTO) {
+
+        CreateGenomeOutDTO response = this.genomeService.createGenome(createGenomeInDTO);
+
+        if (!response.isSuccess()) {
+
+            return ResponseEntity.badRequest().body(response); // HTTP 400
+        }
+
+        return ResponseEntity.status(201).body(response);
+
+
+    }
+
+
+
 }
