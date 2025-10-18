@@ -51,8 +51,9 @@ public class GeneService implements IGeneService {
         Gene geneCreated =this.geneRepository.save(gene);
 
         if (geneCreated.getId() != null) {
-            Set<>
+            addGeneOutDTO.setSuccess(true);
         }
+        return addGeneOutDTO;
     }
 
 

@@ -1,5 +1,6 @@
 package com.developers.GenomeBank_Api.services;
 
+import com.developers.GenomeBank_Api.models.dto.AddGeneInDTO;
 import com.developers.GenomeBank_Api.models.entities.Gene;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +18,7 @@ public interface IGeneService {
 
     public List<Gene> getGenes();
     public Optional<Gene> getGene(Long id);
-    public Gene addGene(Gene gene);
+    public Gene addGene(AddGeneInDTO addGeneInDTO);
 
 
 }
