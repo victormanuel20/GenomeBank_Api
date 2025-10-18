@@ -1,6 +1,6 @@
 package com.developers.GenomeBank_Api.controllers;
 
-import com.developers.GenomeBank_Api.models.dto.AddGeneInDTO;
+import com.developers.GenomeBank_Api.models.dto.CreateGeneInDTO;
 import com.developers.GenomeBank_Api.models.entities.Gene;
 import com.developers.GenomeBank_Api.services.IGeneService;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +37,8 @@ public class GeneController {
 
     @PreAuthorize("hasRole('ADMIN')") // Solo ADMIN puede crear
     @PostMapping("/genomes")
-    public ResponseEntity<Gene> createGene(@RequestBody AddGeneInDTO addGeneInDTO) {
-        return ResponseEntity.ok().body(geneService.addGene(addGeneInDTO));
+    public ResponseEntity<Gene> createGene(@RequestBody CreateGeneInDTO createGeneInDTO) {
+        return ResponseEntity.ok().body(geneService.addGene(createGeneInDTO));
     }
 
     

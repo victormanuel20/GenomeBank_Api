@@ -1,6 +1,6 @@
 package com.developers.GenomeBank_Api.services.impl;
 
-import com.developers.GenomeBank_Api.models.dto.AddGeneInDTO;
+import com.developers.GenomeBank_Api.models.dto.CreateGeneInDTO;
 import com.developers.GenomeBank_Api.models.dto.AddGeneOutDTO;
 import com.developers.GenomeBank_Api.models.entities.Chromosome;
 import com.developers.GenomeBank_Api.models.entities.Gene;
@@ -33,22 +33,22 @@ public class GeneService implements IGeneService {
     }
 
     @Override
-    public AddGeneOutDTO addGene(AddGeneInDTO addGeneInDTO){
+    public AddGeneOutDTO addGene(CreateGeneInDTO createGeneInDTO){
 
         AddGeneOutDTO addGeneOutDTO = new AddGeneOutDTO();
-        if(!this.chromosomeService.existChromosome(addGeneInDTO.getChromosome())){
+        if(!this.chromosomeService.existChromosome(createGeneInDTO.getChromosome())){
             addGeneOutDTO.setErrorMessage("Dosent exist chromosome");
             return addGeneOutDTO;
         }
 
         Gene gene= new Gene();
-        gene.setSymbol(addGeneInDTO.getSymbol());
-        gene.setStartPosition(addGeneInDTO.getStartPosition());
-        gene.setEndPosition(addGeneInDTO.getEndPosition());
-        gene.setStrand(addGeneInDTO.getStrand());
-        gene.setSequence(addGeneInDTO.getSequence());
+        gene.setSymbol(createGeneInDTO.getSymbol());
+        gene.setStartPosition(createGeneInDTO.getStartPosition());
+        gene.setEndPosition(createGeneInDTO.getEndPosition());
+        gene.setStrand(createGeneInDTO.getStrand());
+        gene.setSequence(createGeneInDTO.getSequence());
         Chromosome chromosome= new Chromosome();
-        chromosome.setId(addGeneInDTO.getChromosome());
+        chromosome.setId(createGeneInDTO.getChromosome());
         gene.setChromosome(chromosome);
         Gene geneCreated =this.geneRepository.save(gene);
 
