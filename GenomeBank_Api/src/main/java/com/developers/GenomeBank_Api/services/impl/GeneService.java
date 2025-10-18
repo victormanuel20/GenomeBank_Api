@@ -9,6 +9,7 @@ import com.developers.GenomeBank_Api.services.IChromosomeService;
 import com.developers.GenomeBank_Api.services.IGeneService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,6 +29,7 @@ public class GeneService implements IGeneService {
      */
     public GeneService(GeneRepository geneRepository) {
         this.geneRepository = geneRepository;
+        this.chromosomeService = new ChromosomeService();
     }
 
     @Override
@@ -58,10 +60,16 @@ public class GeneService implements IGeneService {
 
 
     @Override
-    public Optional<Gene> getGene(Long id) {return this.geneRepository.findById(id);
+    public Optional<Gene> getGene(Long id) {
+
+        return this.geneRepository.findById(id);
 
     }
 
 
+    @Override
+    public List<Gene> getGenes(){
 
+        return this.geneRepository.findAll();
+    }
 }

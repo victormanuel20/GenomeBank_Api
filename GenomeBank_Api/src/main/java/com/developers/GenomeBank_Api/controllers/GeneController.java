@@ -40,4 +40,6 @@ public class GeneController {
     public ResponseEntity<Gene> createGene(@RequestBody AddGeneInDTO addGeneInDTO) {
         return ResponseEntity.ok().body(geneService.addGene(addGeneInDTO));
     }
+
+    
 }
