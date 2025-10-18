@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT) // 409
                 .body(Map.of(
                         "error", "Delete conflict",
-                        "message", "Cannot delete genome because it has related chromosomes or genes."
+                        "message", "Cannot delete because it is related with other entities"
                 ));
     }
 
