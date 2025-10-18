@@ -1,9 +1,6 @@
 package com.developers.GenomeBank_Api.controllers;
 
-import com.developers.GenomeBank_Api.models.dto.CreateGeneInDTO;
-import com.developers.GenomeBank_Api.models.dto.CreateGeneOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GeneOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GeneWithSequenceOutDTO;
+import com.developers.GenomeBank_Api.models.dto.*;
 
 import com.developers.GenomeBank_Api.services.IGeneService;
 import org.springframework.http.HttpStatus;
@@ -61,6 +58,42 @@ public class GeneController {
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
         } else {
             return ResponseEntity.badRequest().body(result);
+        }
+    }
+
+
+    /**
+     * Actualiza el gen
+     * @param id identidficador del gen
+     * @param updateGeneInDTO datos del gen a actualizar
+     * @return ResponseEntity con el gen actualizado o 404 si no lo encuentra
+     */
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<GeneOutDTO> updateGene(
+            @PathVariable Long id,
+            @RequestBody UpdateGeneInDTO updateGeneInDTO) {
+        try {
+            return geneService.updateGene(id, updateGeneInDTO)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * Elimina un gen
+     * @param id identidficador del gen
+     * @return ResponseEntity con 204 si es eliminado o 404 si no lo encuentra
+     */
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteGene(@PathVariable Long id) {
+        if (geneService.deleteGene(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

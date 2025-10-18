@@ -1,10 +1,9 @@
 package com.developers.GenomeBank_Api.services.impl;
 
-import com.developers.GenomeBank_Api.models.dto.CreateGeneInDTO;
+import com.developers.GenomeBank_Api.models.dto.*;
+
 import java.util.stream.Collectors;
-import com.developers.GenomeBank_Api.models.dto.CreateGeneOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GeneOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GeneWithSequenceOutDTO;
+
 import com.developers.GenomeBank_Api.models.entities.Chromosome;
 import com.developers.GenomeBank_Api.models.entities.Gene;
 import com.developers.GenomeBank_Api.repositories.GeneFunctionRepository;
@@ -134,7 +133,55 @@ public class GeneService implements IGeneService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Actualiza un gen
+     * @param id identidficador del gen
+     * @param updateGeneInDTO informacion a actualizar
+     * @return Optional wcon el gen actualizado o vacio si no pudo
+     */
+    @Override
 
+    public Optional<GeneOutDTO> updateGene(Long id, UpdateGeneInDTO updateGeneInDTO) {
+        return geneRepository.findById(id)
+                .map(existingGene -> {
+                    if (updateGeneInDTO.getSymbol() != null) {
+                        existingGene.setSymbol(updateGeneInDTO.getSymbol());
+                    }
+                    if (updateGeneInDTO.getStartPosition() != null) {
+                        existingGene.setStartPosition(updateGeneInDTO.getStartPosition());
+                    }
+                    if (updateGeneInDTO.getEndPosition() != null) {
+                        existingGene.setEndPosition(updateGeneInDTO.getEndPosition());
+                    }
+                    if (updateGeneInDTO.getStrand() != null) {
+                        if (!"+".equals(updateGeneInDTO.getStrand()) && !"-".equals(updateGeneInDTO.getStrand())) {
+                            throw new IllegalArgumentException("Strand must be '+' or '-'");
+                        }
+                        existingGene.setStrand(updateGeneInDTO.getStrand());
+                    }
+                    if (updateGeneInDTO.getSequence() != null) {
+                        existingGene.setSequence(updateGeneInDTO.getSequence());
+                    }
+
+                    Gene savedGene = geneRepository.save(existingGene);
+                    return convertToGeneOutDTO(savedGene);
+                });
+    }
+
+    /**
+     * Elimina un gen
+     * @param id identidficador del gen
+     * @return true si se elimina false si no
+     */
+    @Override
+
+    public boolean deleteGene(Long id) {
+        if (geneRepository.existsById(id)) {
+            geneRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
     // Convierte la entidad en un DTO
     private GeneOutDTO convertToGeneOutDTO(Gene gene) {
         GeneOutDTO dto = new GeneOutDTO();

@@ -1,9 +1,6 @@
 package com.developers.GenomeBank_Api.services;
 
-import com.developers.GenomeBank_Api.models.dto.CreateGeneInDTO;
-import com.developers.GenomeBank_Api.models.dto.CreateGeneOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GeneOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GeneWithSequenceOutDTO;
+import com.developers.GenomeBank_Api.models.dto.*;
 
 
 import java.util.List;
@@ -20,4 +17,8 @@ public interface IGeneService {
     Optional<GeneWithSequenceOutDTO> getGeneById(Long id);
 
     List<GeneOutDTO> getAllGenes(Long chromosomeId, String symbol, Integer start, Integer end);
+
+    Optional<GeneOutDTO> updateGene(Long id, UpdateGeneInDTO updateGeneInDTO);
+
+    boolean deleteGene(Long id);
 }
