@@ -1,6 +1,5 @@
 package com.developers.GenomeBank_Api.models.dto.speciesDtos;
 
-import com.developers.GenomeBank_Api.models.dto.ResultDTO;
 import lombok.Data;
 
 /**

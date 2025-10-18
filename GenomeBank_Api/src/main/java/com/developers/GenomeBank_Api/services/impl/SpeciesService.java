@@ -1,15 +1,16 @@
 package com.developers.GenomeBank_Api.services.impl;
 
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.CreateSpeciesInDTO;
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.CreateSpeciesOutDTO;
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.GetSpeciesByIdOutDTO;
-import com.developers.GenomeBank_Api.models.dto.speciesDtos.GetAllSpeciesOutDTO;
+import com.developers.GenomeBank_Api.exceptions.SpeciesNotCreatedException;
+import com.developers.GenomeBank_Api.exceptions.SpeciesNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.SpeciesNotUpdatedException;
+import com.developers.GenomeBank_Api.models.dto.speciesDtos.*;
 import com.developers.GenomeBank_Api.models.entities.Species;
 import com.developers.GenomeBank_Api.repositories.SpeciesRepository;
 import com.developers.GenomeBank_Api.services.ISpeciesService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementación del servicio de especies.
@@ -64,7 +65,7 @@ public class SpeciesService implements ISpeciesService {
     public GetSpeciesByIdOutDTO getSpeciesById(Long id) {
         // findById() busca el id de la especie, no el DTO
         Species species = speciesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Species not found with id: " + id));
+                .orElseThrow(() -> new SpeciesNotFoundException("Species not found with id: " + id));
 
         // Se crea el DTO con el id de la especie encontrada
         GetSpeciesByIdOutDTO dto = new GetSpeciesByIdOutDTO();
@@ -105,15 +106,56 @@ public class SpeciesService implements ISpeciesService {
             // Mensaje de error si encuentra uno de los campos vacíos
             dto.setSucess(false);
             dto.setErrorMessage("Error al crear especie");
+            throw new SpeciesNotCreatedException("Debe llenar los campos respectivos");
         }
 
         return dto;
     }
 
+    /**
+     * Método que actualiza la información total
+     * de una especie
+     * @param id
+     * @param updateSpeciesInDTO
+     * @return UpdateSpeciesOutDTO
+     */
     @Override
-    public boolean existsSpecies(Long id) {
-        return speciesRepository.existsById(id);
+    public UpdateSpeciesOutDTO updateSpecies(Long id, UpdateSpeciesInDTO updateSpeciesInDTO) {
+        return speciesRepository.findById(id)
+                .map(speciesFound -> {
+                    UpdateSpeciesOutDTO dto = new UpdateSpeciesOutDTO();
+
+                    if (updateSpeciesInDTO.getScientificName() == null || updateSpeciesInDTO.getCommonName()
+                            == null) {
+
+                        dto.setSucess(false);
+                        dto.setErrorMessage("Error al actualizar especie");
+                        throw new SpeciesNotUpdatedException("Debe ingresar tanto el nombre científico como " +
+                                "el nombre común.");
+                    }
+
+                    speciesFound.setScientificName(updateSpeciesInDTO.getScientificName());
+                    speciesFound.setCommonName(updateSpeciesInDTO.getCommonName());
+                    speciesRepository.save(speciesFound);
+
+                    dto.setSucess(true);
+                    dto.setErrorMessage(null);
+
+                    return dto;
+                }).orElseThrow(() -> new SpeciesNotFoundException("Species not found with id: " + id));
     }
 
+    @Override
+    public DeleteSpeciesOutDTO deleteSpecies(Long id) {
+        DeleteSpeciesOutDTO dto = new DeleteSpeciesOutDTO();
+
+        Species species = speciesRepository.findById(id)
+                .orElseThrow(() -> new SpeciesNotFoundException("Species not found with id: " + id));
+
+        this.speciesRepository.delete(species);
+        dto.setSucess(true);
+
+        return dto;
+    }
 
 }

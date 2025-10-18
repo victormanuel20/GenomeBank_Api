@@ -24,29 +24,34 @@ public class GlobalExceptionHandler {
                 ));
     }
 
-    @ExceptionHandler(GenomeNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleGenomeNotFound(GenomeNotFoundException ex) {
+    @ExceptionHandler(SpeciesNotUpdatedException.class)
+    public ResponseEntity<Map<String, Object>> handleNotUpdatedSpecies(SpeciesNotUpdatedException ex) {
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of(
-                        "error", "Genome not found",
+                        "error", "Error al actualizar especie",
                         "message", ex.getMessage()
                 ));
     }
 
-
-    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
-    public ResponseEntity<Map<String, Object>> handleDataIntegrity(org.springframework.dao.DataIntegrityViolationException ex) {
+    @ExceptionHandler(SpeciesNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFoundSpecies(SpeciesNotFoundException ex) {
         return ResponseEntity
-                .status(HttpStatus.CONFLICT) // 409
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of(
-                        "error", "Delete conflict",
-                        "message", "Cannot delete genome because it has related chromosomes or genes."
+                        "error", "Error al eliminar especie",
+                        "message", ex.getMessage()
                 ));
     }
 
-
-
-
+    @ExceptionHandler(SpeciesNotCreatedException.class)
+    public ResponseEntity<Map<String, Object>> handleNotCreated(SpeciesNotCreatedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error", "Error al crear especie",
+                        "message", ex.getMessage()
+                ));
+    }
 
 }
