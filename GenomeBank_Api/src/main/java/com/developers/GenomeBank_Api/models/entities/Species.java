@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Entidad que representa una especie biológica registrada en GenomeBank.
  * Cada especie puede estar asociada a uno o varios genomas.
@@ -28,6 +30,6 @@ public class Species {
     @Column(name="common_name")
     private String commonName;
 
-    /*@OneToMany(mappedBy = "species")
-    private Set<Genome> genomes = new HashSet<>();*/
+    @OneToMany(mappedBy = "species")
+    private List<Genome> genomes;
 }
