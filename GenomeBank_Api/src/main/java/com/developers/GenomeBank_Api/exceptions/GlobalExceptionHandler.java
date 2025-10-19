@@ -54,4 +54,14 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(DuplicateSpeciesException.class)
+    public ResponseEntity<Map<String, Object>> handleNotCreated(DuplicateSpeciesException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error", "Error al crear especie",
+                        "message", ex.getMessage()
+                ));
+    }
+
 }

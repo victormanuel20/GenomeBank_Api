@@ -1,9 +1,7 @@
 package com.developers.GenomeBank_Api.services;
 
 import com.developers.GenomeBank_Api.models.dto.speciesDtos.*;
-
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Interfaz de servicio para la gestión de especies.
@@ -17,5 +15,4 @@ public interface ISpeciesService {
             updateSpeciesInDTO);
 
     public DeleteSpeciesOutDTO deleteSpecies(Long id);
-
 }
