@@ -15,4 +15,7 @@ public interface ISpeciesService {
             updateSpeciesInDTO);
 
     public DeleteSpeciesOutDTO deleteSpecies(Long id);
+    public boolean existsSpecies(Long id);
+
+
 }
