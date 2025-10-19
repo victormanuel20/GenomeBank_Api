@@ -1,7 +1,6 @@
 package com.developers.GenomeBank_Api.controllers;
 
 import com.developers.GenomeBank_Api.models.dto.*;
-import com.developers.GenomeBank_Api.models.entities.Chromosome;
 import com.developers.GenomeBank_Api.services.impl.ChromosomeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +21,15 @@ public class ChromosomeController {
     // Listar todos los cromosomas o filtrar por genoma
     @GetMapping("")
     public outDTOListChromosome getAllChromosomes(@RequestParam(required = false) Long genomeId) {
+        //Cosas esperadas, retorna null y
+        // el tipo de valor esperado es un ID en este caso del genoma
         return chromosomeService.getAllChromosomes(genomeId);
     }
 
     // Consultar un cromosoma específico
     @GetMapping("/{id}")
     public outDTOConsultSpecificChromosome getChromosomeById(@PathVariable Long id) {
+        //Toma un valor que se encuentra en la URL, en este caso el ID
         return chromosomeService.getChromosomeById(id);
     }
 
@@ -35,15 +37,14 @@ public class ChromosomeController {
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public outDTOCreateChromosome createChromosome(@RequestBody inDTOCreateChromosome chromosomeInDTO) {
+        //Necesita de un body en JSON para su funcionamiento
         return chromosomeService.createChromosome(chromosomeInDTO);
     }
 
     // Actualizar un cromosoma (solo ADMIN)
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public outDTOUpdateChromosome updateChromosome(
-            @PathVariable Long id,
-            @RequestBody inDTOUpdateChromosome chromosomeInDTO) {
+    public outDTOUpdateChromosome updateChromosome(@PathVariable Long id, @RequestBody inDTOUpdateChromosome chromosomeInDTO) {
         return chromosomeService.updateChromosome(id, chromosomeInDTO);
     }
 
@@ -55,22 +56,23 @@ public class ChromosomeController {
         chromosomeService.deleteChromosome(id);
     }
 
-    // Consultar la secuencia completa de ADN de un cromosoma
     @GetMapping("/{id}/sequence")
-    public String getChromosomeSequence(@PathVariable Long id) {
+    public outDTOChromosomeSequence getChromosomeSequence(@PathVariable("id") Long id) {
         return chromosomeService.getChromosomeSequence(id);
     }
 
     // Consultar una subsecuencia por rango
     @GetMapping("/{id}/sequence/range")
-    public String getChromosomeSubSequence(@PathVariable Long id, @RequestParam int start, @RequestParam int end) {
+    public outDTOChromosomeSubsequence getChromosomeSubSequence(@PathVariable Long id, @RequestParam int start, @RequestParam int end) {
         return chromosomeService.getChromosomeSubSequence(id, start, end);
     }
+
 
     // Registrar o actualizar la secuencia de un cromosoma (solo ADMIN)
     @PutMapping("/{id}/sequence")
     @PreAuthorize("hasRole('ADMIN')")
-    public void updateChromosomeSequence(@PathVariable Long id, @RequestBody String sequence) {
-        chromosomeService.updateChromosomeSequence(id, sequence);
+    public outDTOUpdateChromosomeSequence updateChromosomeSequence(@PathVariable Long id, @RequestBody inDTOUpdateChromosomeSequence body) {
+        return chromosomeService.updateChromosomeSequence(id, body);
     }
+
 }
