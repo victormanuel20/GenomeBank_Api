@@ -356,4 +356,10 @@ public class ChromosomeService implements IChromosomeService {
         return dto;
     }
 
+    @Override
+    public boolean existChromosome(Long id) {
+         return chromosomeRepository.existsById(id);
+
+    }
+
 }

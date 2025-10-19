@@ -75,4 +75,8 @@ public interface IChromosomeService {
      * @param body Nueva secuencia de ADN
      */
     outDTOUpdateChromosomeSequence updateChromosomeSequence(Long id, inDTOUpdateChromosomeSequence body);
+
+
+
+    boolean existChromosome(Long id);
 }

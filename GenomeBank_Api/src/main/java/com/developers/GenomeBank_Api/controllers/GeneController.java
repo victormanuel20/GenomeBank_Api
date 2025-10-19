@@ -55,7 +55,7 @@ public class GeneController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CreateGeneOutDTO> createGene(@RequestBody CreateGeneInDTO createGeneInDTO) {
         CreateGeneOutDTO result = geneService.createGene(createGeneInDTO);
-        if (result.isSuccess()) {
+        if (result.isSucess()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(result);
         } else {
             return ResponseEntity.badRequest().body(result);

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.developers.GenomeBank_Api.models.entities.Chromosome;
 import com.developers.GenomeBank_Api.models.entities.Gene;
+import com.developers.GenomeBank_Api.repositories.ChromosomeRepository;
 import com.developers.GenomeBank_Api.repositories.GeneFunctionRepository;
 import com.developers.GenomeBank_Api.repositories.GeneRepository;
 import com.developers.GenomeBank_Api.services.IChromosomeService;
@@ -26,6 +27,7 @@ public class GeneService implements IGeneService {
 
     private final IChromosomeService chromosomeService;
     private final GeneFunctionRepository geneFunctionRepository;
+    private final ChromosomeRepository chromosomeRepository;
     private GeneRepository geneRepository;
     private final IFunctionService functionService;
 
@@ -38,12 +40,13 @@ public class GeneService implements IGeneService {
      * * @param functionService servicio para operaciones de funcion
      */
     public GeneService(GeneRepository geneRepository, GeneFunctionRepository geneFunctionRepository,
-                       IChromosomeService chromosomeService, IFunctionService functionService) {
+                       IChromosomeService chromosomeService, IFunctionService functionService, ChromosomeRepository chromosomeRepository) {
 
         this.geneRepository = geneRepository;
         this.geneFunctionRepository = geneFunctionRepository;
         this.chromosomeService = chromosomeService;
         this.functionService = functionService;
+        this.chromosomeRepository = chromosomeRepository;
     }
 
     @Override
@@ -82,14 +85,16 @@ public class GeneService implements IGeneService {
         gene.setStrand(createGeneInDTO.getStrand());
         gene.setSequence(createGeneInDTO.getSequence());
 
-        Chromosome chromosome = new Chromosome();
-        chromosome.setId(createGeneInDTO.getChromosomeId());
+
+        Chromosome chromosome = chromosomeRepository.getReferenceById(createGeneInDTO.getChromosome());
+
+
         gene.setChromosome(chromosome);
 
         Gene savedGene = geneRepository.save(gene);
 
         if (savedGene.getId() != null) {
-            result.setSuccess(true);
+            result.setSucess(true);
             result.setGeneId(savedGene.getId());
         }
 
