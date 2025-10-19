@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidSpeciesFilterException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidSpeciesFilter(InvalidSpeciesFilterException ex) {
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST) // ✅ 400 (filtro inválido)
+                .status(HttpStatus.BAD_REQUEST) //  400 (filtro inválido)
                 .body(Map.of(
                         "error", "Invalid species filter",
                         "message", ex.getMessage()
