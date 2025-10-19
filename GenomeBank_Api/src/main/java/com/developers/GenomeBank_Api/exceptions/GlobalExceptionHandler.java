@@ -64,4 +64,24 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(GenomeNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleGenomeNotFound(GenomeNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(
+                        "error", "Genome not found",
+                        "message", ex.getMessage()
+                ));
+    }
+
+
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrity(org.springframework.dao.DataIntegrityViolationException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT) // 409
+                .body(Map.of(
+                        "error", "Delete conflict",
+                        "message", "Cannot delete because it is related with other entities"
+                        ));}
+
 }
