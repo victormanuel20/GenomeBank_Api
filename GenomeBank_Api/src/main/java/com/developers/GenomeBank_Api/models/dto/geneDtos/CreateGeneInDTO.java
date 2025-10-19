@@ -1,7 +1,9 @@
-package com.developers.GenomeBank_Api.models.dto;
+package com.developers.GenomeBank_Api.models.dto.geneDtos;
 
 
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 public class CreateGeneInDTO {
@@ -14,4 +16,5 @@ public class CreateGeneInDTO {
 
     private Long chromosome;
 
+    private Set<GeneFunctionDTO> functions;
 }

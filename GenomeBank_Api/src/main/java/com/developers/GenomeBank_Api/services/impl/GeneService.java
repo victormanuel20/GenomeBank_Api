@@ -2,15 +2,20 @@ package com.developers.GenomeBank_Api.services.impl;
 
 import com.developers.GenomeBank_Api.models.dto.*;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.developers.GenomeBank_Api.models.dto.geneDtos.*;
 import com.developers.GenomeBank_Api.models.entities.Chromosome;
+import com.developers.GenomeBank_Api.models.entities.Function;
 import com.developers.GenomeBank_Api.models.entities.Gene;
+import com.developers.GenomeBank_Api.models.entities.GeneFunction;
 import com.developers.GenomeBank_Api.repositories.ChromosomeRepository;
 import com.developers.GenomeBank_Api.repositories.GeneFunctionRepository;
 import com.developers.GenomeBank_Api.repositories.GeneRepository;
 import com.developers.GenomeBank_Api.services.IChromosomeService;
 import com.developers.GenomeBank_Api.services.IFunctionService;
+import com.developers.GenomeBank_Api.services.IGeneFunctionService;
 import com.developers.GenomeBank_Api.services.IGeneService;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +35,7 @@ public class GeneService implements IGeneService {
     private final ChromosomeRepository chromosomeRepository;
     private GeneRepository geneRepository;
     private final IFunctionService functionService;
-
+    private final IGeneFunctionService geneFunctionService;
 
     /**
      * Constructor que inyecta el repositorio de genes
@@ -40,8 +45,8 @@ public class GeneService implements IGeneService {
      * * @param functionService servicio para operaciones de funcion
      */
     public GeneService(GeneRepository geneRepository, GeneFunctionRepository geneFunctionRepository,
-                       IChromosomeService chromosomeService, IFunctionService functionService, ChromosomeRepository chromosomeRepository) {
-
+                       IChromosomeService chromosomeService, IFunctionService functionService, ChromosomeRepository chromosomeRepository, IGeneFunctionService geneFunctionService) {
+    this.geneFunctionService = geneFunctionService;
         this.geneRepository = geneRepository;
         this.geneFunctionRepository = geneFunctionRepository;
         this.chromosomeService = chromosomeService;
@@ -94,8 +99,13 @@ public class GeneService implements IGeneService {
         Gene savedGene = geneRepository.save(gene);
 
         if (savedGene.getId() != null) {
+            Set<GeneFunction> geneFunctions = createGeneInDTO.getFunctions().stream().map(geneFunctionDTO -> {
+                return convertToGeneFunctionOutDTO(geneFunctionDTO, savedGene.getId());
+            }).collect(Collectors.toSet());
+            savedGene.setGeneFunctions(geneFunctions);
+            this.geneFunctionService.createGeneFunctionBatch(geneFunctions);
             result.setSucess(true);
-            result.setGeneId(savedGene.getId());
+
         }
 
         return result;
@@ -220,10 +230,72 @@ public class GeneService implements IGeneService {
                 });
     }
 
+    @Override
+    public List<GeneFunctionOutDTO> getGeneFunctions(Long geneId) {
+        List<GeneFunction> geneFunctions = geneFunctionRepository.findByGeneId(geneId);
+        return geneFunctions.stream()
+                .map(this::convertToGeneFunctionOutDTO)
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public CreateGeneFunctionOutDTO assignFunctionToGene(Long geneId, GeneFunctionInDTO geneFunctionInDTO) {
+        CreateGeneFunctionOutDTO result = new CreateGeneFunctionOutDTO();
 
+        if (!geneRepository.existsById(geneId)) {
+            result.setErrorMessage("Gene not found");
+            return result;
+        }
 
+        if (!FunctionService.existsById(geneFunctionInDTO.getFunctionId())) {
+            result.setErrorMessage("Function not found");
+            return result;
+        }
 
+        Optional<GeneFunction> existingAssociation = geneFunctionRepository
+                .findByGeneIdAndFunctionId(geneId, geneFunctionInDTO.getFunctionId());
+        if (existingAssociation.isPresent()) {
+            result.setErrorMessage("This function is already associated with this gene");
+            return result;
+        }
+
+        GeneFunction geneFunction = new GeneFunction();
+        Gene gene = new Gene();
+        gene.setId(geneId);
+        geneFunction.setGene(gene);
+
+        Function function = new Function();
+        function.setId(geneFunctionInDTO.getFunctionId());
+        geneFunction.setFunction(function);
+
+        geneFunction.setEvidence(geneFunctionInDTO.getEvidence());
+
+        GeneFunction savedGeneFunction = geneFunctionRepository.save(geneFunction);
+
+        if (savedGeneFunction.getId() != null) {
+            result.setSucess(true);
+            result.setGeneFunctionId(savedGeneFunction.getId());
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean removeFunctionFromGene(Long geneId, Long functionId) {
+        return false;
+    }
+
+    private GeneFunctionOutDTO convertToGeneFunctionOutDTO(GeneFunction geneFunction) {
+        GeneFunctionOutDTO dto = new GeneFunctionOutDTO();
+        dto.setId(geneFunction.getId());
+        dto.setGeneId(geneFunction.getGene().getId());
+        dto.setFunctionId(geneFunction.getFunction().getId());
+        dto.setFunctionCode(geneFunction.getFunction().getCode());
+        dto.setFunctionName(geneFunction.getFunction().getName());
+        dto.setCategory(geneFunction.getFunction().getCategory());
+        dto.setEvidence(geneFunction.getEvidence());
+        return dto;
+    }
     // Convierte la entidad en un DTO
     private GeneOutDTO convertToGeneOutDTO(Gene gene) {
         GeneOutDTO dto = new GeneOutDTO();

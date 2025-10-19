@@ -2,6 +2,10 @@ package com.developers.GenomeBank_Api.controllers;
 
 import com.developers.GenomeBank_Api.models.dto.*;
 
+import com.developers.GenomeBank_Api.models.dto.geneDtos.CreateGeneInDTO;
+import com.developers.GenomeBank_Api.models.dto.geneDtos.CreateGeneOutDTO;
+import com.developers.GenomeBank_Api.models.dto.geneDtos.GeneOutDTO;
+import com.developers.GenomeBank_Api.models.dto.geneDtos.GeneWithSequenceOutDTO;
 import com.developers.GenomeBank_Api.services.IGeneService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
