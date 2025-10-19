@@ -8,7 +8,7 @@ public class outDTOUpdateChromosome extends ResultDTO {
     private String name;
     private int length;
     private String sequence;
-    private GenomeDTO genome; // resumido (id + version)
+    private GenomeDTO genome;
 
     @Data
     public static class GenomeDTO {

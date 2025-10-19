@@ -1,9 +1,6 @@
 package com.developers.GenomeBank_Api.services;
 
 import com.developers.GenomeBank_Api.models.dto.*;
-import com.developers.GenomeBank_Api.models.entities.Chromosome;
-
-import java.util.List;
 
 /**
  * Interfaz de servicio para la gestión de cromosomas.
@@ -59,7 +56,7 @@ public interface IChromosomeService {
      * @param id ID del cromosoma
      * @return Secuencia de ADN del cromosoma
      */
-    String getChromosomeSequence(Long id);
+    outDTOChromosomeSequence getChromosomeSequence(Long id);
 
     /**
      * Obtiene una subsecuencia de ADN de un cromosoma dentro de un rango específico.
@@ -69,13 +66,13 @@ public interface IChromosomeService {
      * @param end Posición final del rango
      * @return Subsecuencia de ADN dentro del rango
      */
-    String getChromosomeSubSequence(Long id, int start, int end);
+    outDTOChromosomeSubsequence getChromosomeSubSequence(Long id, int start, int end);
 
     /**
      * Actualiza la secuencia de ADN de un cromosoma.
      *
      * @param id ID del cromosoma a actualizar
-     * @param sequence Nueva secuencia de ADN
+     * @param body Nueva secuencia de ADN
      */
-    void updateChromosomeSequence(Long id, String sequence);
+    outDTOUpdateChromosomeSequence updateChromosomeSequence(Long id, inDTOUpdateChromosomeSequence body);
 }
