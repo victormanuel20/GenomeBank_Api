@@ -1,6 +1,7 @@
 package com.developers.GenomeBank_Api.services.impl;
 
 import com.developers.GenomeBank_Api.exceptions.GenomeNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.InvalidSpeciesFilterException;
 import com.developers.GenomeBank_Api.models.dto.genome.*;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 import com.developers.GenomeBank_Api.models.entities.Species;
@@ -80,9 +81,56 @@ public class GenomeService implements IGenomeService {
 
     }
 
+
+
     @Override
     public List<GenomeOutDTO> getGenomes(GetGenomesInDTO inDTO) {
-        return List.of();
+
+        List<Genome> genomes;
+
+        // Si viene speciesId, filtramos por especie
+        if (inDTO.getSpeciesId() != null) {
+
+            // Validar que la especie existe antes de buscar
+            if (!this.speciesService.existsSpecies(inDTO.getSpeciesId())) {
+                // Lanzar excepción específica para filtro inválido
+                throw new InvalidSpeciesFilterException(inDTO.getSpeciesId());
+            }
+
+            // Buscar genomas de esa especie específica
+            genomes = this.genomeRepository.findBySpeciesId(inDTO.getSpeciesId());
+
+        } else {
+            // Si NO viene speciesId, listar TODOS los genomas
+            genomes = this.genomeRepository.findAll();
+        }
+
+        // Convertir las entidades Genome a DTOs GenomeOutDTO
+        return genomes.stream()
+                .map(this::convertToOutDTO)
+                .toList();
+    }
+
+    /**
+     * Método auxiliar para convertir una entidad Genome a GenomeOutDTO
+     * @param genome entidad Genome
+     * @return GenomeOutDTO con la información del genoma y su especie
+     */
+    private GenomeOutDTO convertToOutDTO(Genome genome) {
+        GenomeOutDTO dto = new GenomeOutDTO();
+
+        // Información del genoma
+        dto.setId(genome.getId());
+        dto.setVersion(genome.getVersion());
+
+        // Información de la especie asociada (para dar contexto)
+        if (genome.getSpecies() != null) {
+            dto.setSpeciesId(genome.getSpecies().getId());
+            dto.setSpeciesScientificName(genome.getSpecies().getScientificName());
+            dto.setSpeciesCommonName(genome.getSpecies().getCommonName());
+        }
+
+        return dto;
     }
 
     /*

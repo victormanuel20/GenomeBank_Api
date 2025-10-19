@@ -61,15 +61,28 @@ public class GenomeController {
     }
 
 
+    /**
+     * Lista todos los genomas o filtra por especie si se proporciona speciesId.
+     *
+     * Ejemplos:
+     * - GET /genomes → Lista todos los genomas
+     * - GET /genomes?speciesId=1 → Lista solo los genomas de la especie 1
+     *
+     * @param speciesId (opcional) ID de la especie para filtrar
+     * @return ResponseEntity con lista de GenomeOutDTO
+     */
     @GetMapping("")
     public ResponseEntity<List<GenomeOutDTO>> getGenomes(
             @RequestParam(required = false) Long speciesId) {
 
+        // Construir el InDTO con el query param
         GetGenomesInDTO inDTO = new GetGenomesInDTO();
         inDTO.setSpeciesId(speciesId);
 
+        // Llamar al servicio (lanzará InvalidSpeciesFilterException si no existe)
         List<GenomeOutDTO> response = genomeService.getGenomes(inDTO);
 
+        // Retornar HTTP 200 con la lista
         return ResponseEntity.ok(response);
     }
 
