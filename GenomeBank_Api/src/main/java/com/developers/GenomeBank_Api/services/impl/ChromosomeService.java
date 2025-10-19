@@ -204,13 +204,13 @@ public class ChromosomeService implements IChromosomeService {
             g.setVersion(updated.getGenome().getVersion());
             out.setGenome(g);
 
-            out.setSuccess(true);
+            out.setSucess(true);
             out.setErrorMessage(null);  // No hay error
 
             return out;
         } catch (Exception e) {
             outDTOUpdateChromosome out = new outDTOUpdateChromosome();
-            out.setSuccess(false);
+            out.setSucess(false);
             out.setErrorMessage("Error updating chromosome: " + e.getMessage());
             return out;
         }
