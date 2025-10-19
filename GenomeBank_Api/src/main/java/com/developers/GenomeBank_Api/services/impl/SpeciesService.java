@@ -8,9 +8,9 @@ import com.developers.GenomeBank_Api.models.entities.Species;
 import com.developers.GenomeBank_Api.repositories.SpeciesRepository;
 import com.developers.GenomeBank_Api.services.ISpeciesService;
 import org.springframework.stereotype.Service;
+import com.developers.GenomeBank_Api.exceptions.DuplicateSpeciesException;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementación del servicio de especies.
@@ -92,23 +92,26 @@ public class SpeciesService implements ISpeciesService {
     public CreateSpeciesOutDTO createSpecies(CreateSpeciesInDTO createSpeciesInDTO) {
         CreateSpeciesOutDTO dto = new CreateSpeciesOutDTO();
 
+        String sciName = createSpeciesInDTO.getScientificName();
+        String comName = createSpeciesInDTO.getCommonName();
+
+        if (sciName == null || sciName.isBlank() || comName == null || comName.isBlank()) {
+            throw new SpeciesNotCreatedException("Debe llenar los campos de nombre científico y común.");
+        }
+
+        if (speciesRepository.findByScientificName(sciName).isPresent()) {
+            throw new DuplicateSpeciesException("Ya existe una especie con ese nombre científico.");
+        }
+        if (speciesRepository.findByCommonName(comName).isPresent()) {
+            throw new DuplicateSpeciesException("Ya existe una especie con ese nombre común.");
+        }
+
         Species species = new Species();
-        species.setScientificName(createSpeciesInDTO.getScientificName());
-        species.setCommonName(createSpeciesInDTO.getCommonName());
+        species.setScientificName(sciName);
+        species.setCommonName(comName);
+        speciesRepository.save(species);
 
-        if (species.getScientificName() != null &&
-                species.getCommonName() != null) {
-
-            this.speciesRepository.save(species);
-            dto.setSucess(true);
-        }
-        else {
-            // Mensaje de error si encuentra uno de los campos vacíos
-            dto.setSucess(false);
-            dto.setErrorMessage("Error al crear especie");
-            throw new SpeciesNotCreatedException("Debe llenar los campos respectivos");
-        }
-
+        dto.setSucess(true);
         return dto;
     }
 
