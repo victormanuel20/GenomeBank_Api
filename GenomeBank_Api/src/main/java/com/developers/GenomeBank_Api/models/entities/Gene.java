@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Entidad que representa un gen dentro de un cromosoma.
  * Cada gen pertenece a un Chromosome y puede tener múltiples funciones
@@ -41,6 +44,6 @@ public class Gene {
     @JoinColumn(name = "chromosome_id")
     private Chromosome chromosome;
 
-    /*@OneToMany(mappedBy = "gene")
-    private Set<GeneFunction> geneFunctions = new HashSet<>();*/
+    @OneToMany(mappedBy = "gene")
+    private Set<GeneFunction> geneFunctions = new HashSet<>();
 }
