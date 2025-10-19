@@ -1,14 +1,14 @@
 package com.developers.GenomeBank_Api.services.impl;
 
-import com.developers.GenomeBank_Api.exceptions.SpeciesNotCreatedException;
-import com.developers.GenomeBank_Api.exceptions.SpeciesNotFoundException;
-import com.developers.GenomeBank_Api.exceptions.SpeciesNotUpdatedException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotCreatedException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotUpdatedException;
 import com.developers.GenomeBank_Api.models.dto.speciesDtos.*;
 import com.developers.GenomeBank_Api.models.entities.Species;
 import com.developers.GenomeBank_Api.repositories.SpeciesRepository;
 import com.developers.GenomeBank_Api.services.ISpeciesService;
 import org.springframework.stereotype.Service;
-import com.developers.GenomeBank_Api.exceptions.DuplicateSpeciesException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.DuplicateSpeciesException;
 
 import java.util.List;
 
