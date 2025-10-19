@@ -1,10 +1,20 @@
 package com.developers.GenomeBank_Api.exceptions;
 
+import com.developers.GenomeBank_Api.exceptions.authExceptions.InvalidEmailException;
+import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionInUseException;
+import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotCreatedException;
+import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotUpdatedException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.DuplicateSpeciesException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotCreatedException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotUpdatedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -55,11 +65,51 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateSpeciesException.class)
-    public ResponseEntity<Map<String, Object>> handleNotCreated(DuplicateSpeciesException ex) {
+    public ResponseEntity<Map<String, Object>> handleDuplicated(DuplicateSpeciesException ex) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of(
                         "error", "Error al crear especie",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(FunctionNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFunctionFound(FunctionNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error", "Error al buscar función",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(FunctionNotCreatedException.class)
+    public ResponseEntity<Map<String, Object>> handleFunctionNotCreated(FunctionNotCreatedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                        "error", "Error al crear función",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(FunctionNotUpdatedException.class)
+    public ResponseEntity<Map<String, Object>> handleFunctionNotUpdated(FunctionNotUpdatedException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                        "error", "Error al actualizar función",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(FunctionInUseException.class)
+    public ResponseEntity<Map<String, Object>> handleFunctionInUse(FunctionInUseException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of(
+                        "error", "Error al eliminar función",
                         "message", ex.getMessage()
                 ));
     }

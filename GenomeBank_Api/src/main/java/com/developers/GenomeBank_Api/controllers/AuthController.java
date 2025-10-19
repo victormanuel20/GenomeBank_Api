@@ -1,7 +1,7 @@
 package com.developers.GenomeBank_Api.controllers;
 
 import com.developers.GenomeBank_Api.auth.JwtService;
-import com.developers.GenomeBank_Api.exceptions.InvalidEmailException;
+import com.developers.GenomeBank_Api.exceptions.authExceptions.InvalidEmailException;
 import com.developers.GenomeBank_Api.models.dto.RegisterRequest;
 import com.developers.GenomeBank_Api.models.entities.Role;
 import com.developers.GenomeBank_Api.models.entities.Users;

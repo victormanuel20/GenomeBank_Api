@@ -1,4 +1,4 @@
-package com.developers.GenomeBank_Api.exceptions;
+package com.developers.GenomeBank_Api.exceptions.speciesExceptions;
 
 /**
  * Excepción personalizada cuando hay un error

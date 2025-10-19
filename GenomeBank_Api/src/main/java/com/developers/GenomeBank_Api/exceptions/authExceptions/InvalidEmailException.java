@@ -1,4 +1,4 @@
-package com.developers.GenomeBank_Api.exceptions;
+package com.developers.GenomeBank_Api.exceptions.authExceptions;
 
 /**
  * Excepción personalizada cuando el email proporcionado no coincide
