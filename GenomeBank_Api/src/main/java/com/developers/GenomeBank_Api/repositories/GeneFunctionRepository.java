@@ -19,5 +19,12 @@ import java.util.Optional;
 public interface GeneFunctionRepository extends JpaRepository<GeneFunction, Long> {
 
 
+    @Query("SELECT gf FROM GeneFunction gf WHERE gf.gene.id = :geneId")
+    List<GeneFunction> findByGeneId(@Param("geneId") Long geneId);
+
+    @Query("SELECT gf FROM GeneFunction gf WHERE gf.gene.id = :geneId AND gf.function.id = :functionId")
+    Optional<GeneFunction> findByGeneIdAndFunctionId(@Param("geneId") Long geneId, @Param("functionId") Long functionId);
+
+    boolean existsByGeneIdAndFunctionId(Long geneId, Long functionId);
 
 }

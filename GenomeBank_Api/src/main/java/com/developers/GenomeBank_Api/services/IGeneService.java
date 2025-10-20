@@ -27,8 +27,13 @@ public interface IGeneService {
 
     Optional<GeneOutDTO> updateGeneSequence(Long id, UpdateGeneSequenceInDTO updateGeneSequenceInDTO);
 
+    List<GeneFunctionOutDTO> getGeneFunctions(Long geneId);
 
+    CreateGeneFunctionOutDTO addFunctionToGene(Long geneId, Long functionId, GeneFunctionInDTO geneFunctionInDTO);
 
-
-
+    boolean removeFunctionFromGene(Long geneId, Long functionId);
 }
+
+
+
+

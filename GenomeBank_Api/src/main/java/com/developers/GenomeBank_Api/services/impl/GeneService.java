@@ -1,5 +1,6 @@
 package com.developers.GenomeBank_Api.services.impl;
 
+import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.geneExeptions.GenNotFoundException;
 import com.developers.GenomeBank_Api.models.dto.*;
 
@@ -248,6 +249,92 @@ public class GeneService implements IGeneService {
                 });
     }
 
+
+    /**
+     * Obtiene todas las funciones asociadas a un gen específico
+     * @param geneId identificador del gen
+     * @return lista de funciones asociadas al gen
+     */
+    @Override
+    public List<GeneFunctionOutDTO> getGeneFunctions(Long geneId) {
+        if (!geneRepository.existsById(geneId)) {
+            throw new GenNotFoundException("Gene with ID " + geneId + " not found");
+        }
+
+        List<GeneFunction> geneFunctions = geneFunctionRepository.findByGeneId(geneId);
+        if (geneFunctions.isEmpty()){
+            throw new FunctionNotFoundException("Gene with ID " + geneId + " dosent have functions");
+        }
+        return geneFunctions.stream()
+                .map(this::convertToGeneFunctionOutDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CreateGeneFunctionOutDTO addFunctionToGene(Long geneId, Long functionId, GeneFunctionInDTO geneFunctionInDTO) {
+        CreateGeneFunctionOutDTO result = new CreateGeneFunctionOutDTO();
+
+        // Validar que el gen existe
+        if (!geneRepository.existsById(geneId)) {
+            result.setSucess(false);
+            result.setErrorMessage("Gene with ID " + geneId + " does not exist");
+            return result;
+        }
+
+        // Validar que la función existe
+        if (!functionService.existsById(functionId)) {
+            result.setSucess(false);
+            result.setErrorMessage("Function with ID " + functionId + " does not exist");
+            return result;
+        }
+
+        // Validar que la asociación no existe ya
+        if (geneFunctionRepository.existsByGeneIdAndFunctionId(geneId, functionId)) {
+            result.setSucess(false);
+            result.setErrorMessage("This gene is already associated with this function");
+            return result;
+        }
+
+        // Crear la nueva asociación
+        GeneFunction geneFunction = new GeneFunction();
+
+        Gene gene = geneRepository.getReferenceById(geneId);
+        geneFunction.setGene(gene);
+
+        Function function = new Function();
+        function.setId(functionId);
+        geneFunction.setFunction(function);
+
+        if (geneFunctionInDTO != null && geneFunctionInDTO.getEvidence() != null) {
+            geneFunction.setEvidence(geneFunctionInDTO.getEvidence());
+        }
+
+        GeneFunction savedGeneFunction = geneFunctionRepository.save(geneFunction);
+
+        result.setSucess(true);
+        result.setGeneFunctionId(savedGeneFunction.getId());
+        result.setErrorMessage("Function successfully associated with gene");
+
+        return result;
+    }
+    /**
+     * Elimina la asociación entre un gen y una función
+     * @param geneId identificador del gen
+     * @param functionId identificador de la función
+     * @return true si se eliminó, false si no existe la asociación
+     */
+    @Override
+    public boolean removeFunctionFromGene(Long geneId, Long functionId) {
+        Optional<GeneFunction> geneFunctionOpt = geneFunctionRepository
+                .findByGeneIdAndFunctionId(geneId, functionId);
+
+        if (geneFunctionOpt.isPresent()) {
+            geneFunctionRepository.delete(geneFunctionOpt.get());
+            return true;
+        }
+
+        return false;
+    }
 
 
     private GeneFunctionOutDTO convertToGeneFunctionOutDTO(GeneFunction geneFunction) {
