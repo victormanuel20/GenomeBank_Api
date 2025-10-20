@@ -1,7 +1,7 @@
 package com.developers.GenomeBank_Api.services;
 
-import com.developers.GenomeBank_Api.models.dto.GetGenesInRangeOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GetSequenceStatsOutDTO;
+import com.developers.GenomeBank_Api.models.dto.analysisDto.GetGenesInRangeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.analysisDto.GetSequenceStatsOutDTO;
 
 import java.util.List;
 

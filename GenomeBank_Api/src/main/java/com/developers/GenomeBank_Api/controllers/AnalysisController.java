@@ -1,7 +1,7 @@
 package com.developers.GenomeBank_Api.controllers;
 
-import com.developers.GenomeBank_Api.models.dto.GetGenesInRangeOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GetSequenceStatsOutDTO;
+import com.developers.GenomeBank_Api.models.dto.analysisDto.GetGenesInRangeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.analysisDto.GetSequenceStatsOutDTO;
 import com.developers.GenomeBank_Api.services.IAnalysisService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

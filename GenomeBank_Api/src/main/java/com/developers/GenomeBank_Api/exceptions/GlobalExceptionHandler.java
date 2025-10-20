@@ -1,11 +1,14 @@
 package com.developers.GenomeBank_Api.exceptions;
 
 import com.developers.GenomeBank_Api.exceptions.authExceptions.InvalidEmailException;
+import com.developers.GenomeBank_Api.exceptions.chromosomeException.ChromosomeNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionInUseException;
 import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotCreatedException;
 import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotUpdatedException;
 import com.developers.GenomeBank_Api.exceptions.geneExeptions.GenNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.GenomeNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.InvalidSpeciesFilterException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.DuplicateSpeciesException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotCreatedException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotFoundException;
@@ -15,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

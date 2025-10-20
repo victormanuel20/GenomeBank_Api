@@ -1,4 +1,4 @@
-package com.developers.GenomeBank_Api.exceptions;
+package com.developers.GenomeBank_Api.exceptions.genomeException;
 
 public class InvalidSpeciesFilterException extends RuntimeException {
 

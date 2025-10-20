@@ -1,6 +1,6 @@
 package com.developers.GenomeBank_Api.services.impl;
 
-import com.developers.GenomeBank_Api.models.dto.*;
+import com.developers.GenomeBank_Api.models.dto.chromosomeDto.*;
 import com.developers.GenomeBank_Api.models.entities.Chromosome;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 import com.developers.GenomeBank_Api.repositories.ChromosomeRepository;

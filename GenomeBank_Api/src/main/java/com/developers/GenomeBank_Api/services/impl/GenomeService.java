@@ -1,7 +1,7 @@
 package com.developers.GenomeBank_Api.services.impl;
 
-import com.developers.GenomeBank_Api.exceptions.GenomeNotFoundException;
-import com.developers.GenomeBank_Api.exceptions.InvalidSpeciesFilterException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.GenomeNotFoundException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.InvalidSpeciesFilterException;
 import com.developers.GenomeBank_Api.models.dto.genome.*;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 import com.developers.GenomeBank_Api.models.entities.Species;

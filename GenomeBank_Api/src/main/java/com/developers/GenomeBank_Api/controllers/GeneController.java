@@ -1,7 +1,5 @@
 package com.developers.GenomeBank_Api.controllers;
 
-import com.developers.GenomeBank_Api.models.dto.*;
-
 import com.developers.GenomeBank_Api.models.dto.geneDtos.*;
 import com.developers.GenomeBank_Api.services.IGeneService;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,6 @@
-package com.developers.GenomeBank_Api.models.dto;
+package com.developers.GenomeBank_Api.models.dto.chromosomeDto;
 
+import com.developers.GenomeBank_Api.models.dto.ResultDTO;
 import lombok.Data;
 
 @Data

@@ -1,6 +1,6 @@
 package com.developers.GenomeBank_Api.services;
 
-import com.developers.GenomeBank_Api.models.dto.*;
+import com.developers.GenomeBank_Api.models.dto.chromosomeDto.*;
 
 /**
  * Interfaz de servicio para la gestión de cromosomas.

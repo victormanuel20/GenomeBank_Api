@@ -1,8 +1,8 @@
 package com.developers.GenomeBank_Api.services.impl;
 
-import com.developers.GenomeBank_Api.exceptions.ChromosomeNotFoundException;
-import com.developers.GenomeBank_Api.models.dto.GetGenesInRangeOutDTO;
-import com.developers.GenomeBank_Api.models.dto.GetSequenceStatsOutDTO;
+import com.developers.GenomeBank_Api.exceptions.chromosomeException.ChromosomeNotFoundException;
+import com.developers.GenomeBank_Api.models.dto.analysisDto.GetGenesInRangeOutDTO;
+import com.developers.GenomeBank_Api.models.dto.analysisDto.GetSequenceStatsOutDTO;
 import com.developers.GenomeBank_Api.models.entities.Chromosome;
 import com.developers.GenomeBank_Api.models.entities.Gene;
 import com.developers.GenomeBank_Api.repositories.ChromosomeRepository;

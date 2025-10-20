@@ -1,11 +1,9 @@
 package com.developers.GenomeBank_Api.controllers;
 
-import com.developers.GenomeBank_Api.models.dto.*;
+import com.developers.GenomeBank_Api.models.dto.chromosomeDto.*;
 import com.developers.GenomeBank_Api.services.impl.ChromosomeService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/chromosomes")

@@ -1,6 +1,5 @@
 package com.developers.GenomeBank_Api.services;
 
-import com.developers.GenomeBank_Api.models.dto.*;
 import com.developers.GenomeBank_Api.models.dto.geneDtos.*;
 
 

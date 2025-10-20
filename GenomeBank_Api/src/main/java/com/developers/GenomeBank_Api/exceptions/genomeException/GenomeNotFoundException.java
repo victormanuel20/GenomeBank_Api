@@ -1,4 +1,4 @@
-package com.developers.GenomeBank_Api.exceptions;
+package com.developers.GenomeBank_Api.exceptions.genomeException;
 
 /**
  * Custom exception thrown when a genome with a specific ID does not exist.
