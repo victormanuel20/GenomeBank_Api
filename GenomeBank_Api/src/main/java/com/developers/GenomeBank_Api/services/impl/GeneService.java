@@ -325,11 +325,11 @@ public class GeneService implements IGeneService {
      */
     @Override
     public boolean removeFunctionFromGene(Long geneId, Long functionId) {
-        Optional<GeneFunction> geneFunctionOpt = geneFunctionRepository
+        Optional<GeneFunction> geneFunctionRepository = this.geneFunctionRepository
                 .findByGeneIdAndFunctionId(geneId, functionId);
 
-        if (geneFunctionOpt.isPresent()) {
-            geneFunctionRepository.delete(geneFunctionOpt.get());
+        if (geneFunctionRepository.isPresent()) {
+            this.geneFunctionRepository.delete(geneFunctionRepository.get());
             return true;
         }
 
@@ -339,7 +339,7 @@ public class GeneService implements IGeneService {
 
     private GeneFunctionOutDTO convertToGeneFunctionOutDTO(GeneFunction geneFunction) {
         GeneFunctionOutDTO dto = new GeneFunctionOutDTO();
-        dto.setId(geneFunction.getId());
+        dto.setFunctionId(geneFunction.getFunction().getId());
         dto.setGeneId(geneFunction.getGene().getId());
         dto.setFunctionId(geneFunction.getFunction().getId());
         dto.setFunctionCode(geneFunction.getFunction().getCode());
