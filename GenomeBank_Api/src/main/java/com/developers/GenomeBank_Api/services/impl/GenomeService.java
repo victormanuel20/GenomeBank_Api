@@ -2,6 +2,8 @@ package com.developers.GenomeBank_Api.services.impl;
 
 import com.developers.GenomeBank_Api.exceptions.genomeException.GenomeNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.genomeException.InvalidSpeciesFilterException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.InvalidSpeciesForGenomeException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.MissingFieldsException;
 import com.developers.GenomeBank_Api.models.dto.genome.*;
 import com.developers.GenomeBank_Api.models.entities.Genome;
 import com.developers.GenomeBank_Api.models.entities.Species;
@@ -158,5 +160,51 @@ public class GenomeService implements IGenomeService {
 
         return outDTO;
     }
+
+    @Override
+    public UpdateGenomeOutDTO updateGenome(Long id, UpdateGenomeInDTO inDTO) {
+
+        UpdateGenomeOutDTO outDTO = new UpdateGenomeOutDTO();
+
+        // 1. VALIDAR que version no sea null ni vacío
+        if (inDTO.getVersion() == null || inDTO.getVersion().trim().isEmpty()) {
+            throw new MissingFieldsException("Version is required and cannot be empty");
+        }
+
+        // 2. VALIDAR que speciesId no sea null
+        if (inDTO.getSpeciesId() == null) {
+            throw new MissingFieldsException("Species ID is required");
+        }
+
+        // 3. Buscar el genoma a actualizar
+        Genome genome = this.genomeRepository.findById(id)
+                .orElseThrow(() -> new GenomeNotFoundException(id));
+
+        // 4. Validar que la especie existe
+        if (!this.speciesService.existsSpecies(inDTO.getSpeciesId())) {
+            throw new InvalidSpeciesForGenomeException(inDTO.getSpeciesId());
+        }
+
+        // 5. Obtener la especie
+        Species species = this.speciesRepository.getReferenceById(inDTO.getSpeciesId());
+
+        // 6. Actualizar los campos del genoma
+        genome.setVersion(inDTO.getVersion().trim());
+        genome.setSpecies(species);
+
+        // 7. Guardar cambios
+        Genome updatedGenome = this.genomeRepository.save(genome);
+
+        // 8. Construir respuesta exitosa
+        outDTO.setSucess(true);
+        outDTO.setId(updatedGenome.getId());
+        outDTO.setVersion(updatedGenome.getVersion());
+        outDTO.setSpeciesId(updatedGenome.getSpecies().getId());
+        outDTO.setSpeciesScientificName(updatedGenome.getSpecies().getScientificName());
+        outDTO.setSpeciesCommonName(updatedGenome.getSpecies().getCommonName());
+
+        return outDTO;
+    }
+
 
 }
