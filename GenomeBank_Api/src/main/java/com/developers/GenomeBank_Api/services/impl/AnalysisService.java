@@ -54,7 +54,7 @@ public class AnalysisService implements IAnalysisService {
         String seq = chr.getSequence().toUpperCase();
         int length = seq.length();
 
-        long gcCount = seq.chars()
+        Long gcCount = seq.chars()
                 .filter(base -> base == 'G' || base == 'C')
                 .count();
 
