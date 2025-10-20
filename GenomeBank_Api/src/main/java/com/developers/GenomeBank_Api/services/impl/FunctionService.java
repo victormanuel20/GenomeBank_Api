@@ -35,8 +35,14 @@ public class FunctionService implements IFunctionService {
 
         if (code != null && !code.isBlank()) {
             functions = functionRepository.findByCode(code);
+            if (functions.isEmpty()){
+                throw new FunctionNotFoundException("Function not found");
+            }
         } else if (category != null && !category.isBlank()) {
             functions = functionRepository.findByCategory(category);
+            if (functions.isEmpty()){
+                throw new FunctionNotFoundException("Function not found");
+            }
         } else {
             functions = functionRepository.findAll();
         }
