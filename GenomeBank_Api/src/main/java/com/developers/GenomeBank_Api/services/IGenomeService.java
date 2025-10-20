@@ -15,21 +15,7 @@ public interface IGenomeService {
     public CreateGenomeOutDTO createGenome(CreateGenomeInDTO createGenomeInDTO);
     public DeleteGenomeOutDTO deleteGenome(Long id);
     List<GenomeOutDTO> getGenomes(GetGenomesInDTO inDTO);
+    GetGenomeByIdOutDTO getGenomeById(GetGenomeByIdInDTO inDTO);
 
-    /*
-    // Retrieve all genomes or filter by species
-    List<Genome> getAllGenomes(Long speciesId);
-
-    // Get a genome by its ID
-    public Optional<Genome> getGenomeById(Long id);
-
-    // Update an existing genome
-    public Optional<Genome> updateGenome(Long id, Genome genome);
-
-    // Delete a genome by ID
-    boolean deleteGenome(Long id);
-
-
-     */
 
 }

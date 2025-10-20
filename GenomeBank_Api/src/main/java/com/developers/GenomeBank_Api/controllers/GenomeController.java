@@ -86,6 +86,26 @@ public class GenomeController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Consulta un genoma específico por su ID.
+     *
+     * @param id ID del genoma a consultar
+     * @return ResponseEntity con GetGenomeByIdOutDTO
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<GetGenomeByIdOutDTO> getGenomeById(@PathVariable Long id) {
+
+        // Construir el InDTO
+        GetGenomeByIdInDTO inDTO = new GetGenomeByIdInDTO();
+        inDTO.setId(id);
+
+        // Llamar al servicio (si no existe, lanzará GenomeNotFoundException)
+        GetGenomeByIdOutDTO response = genomeService.getGenomeById(inDTO);
+
+        // Respuesta exitosa
+        return ResponseEntity.ok(response); // 200
+    }
+
 
 
 }

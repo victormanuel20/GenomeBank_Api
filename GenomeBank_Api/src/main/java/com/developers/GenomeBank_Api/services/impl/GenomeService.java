@@ -45,7 +45,6 @@ public class GenomeService implements IGenomeService {
             return outDTO;
         }
 
-
         Genome genome = new Genome();
         genome.setVersion(createGenomeInDTO.getVersion());
 
@@ -64,6 +63,7 @@ public class GenomeService implements IGenomeService {
         return outDTO;
     }
 
+    
 
     @Override
     public DeleteGenomeOutDTO deleteGenome(Long id) {
@@ -133,55 +133,30 @@ public class GenomeService implements IGenomeService {
         return dto;
     }
 
-    /*
     @Override
-    public List<GenomeOutDTO> getGenomes(GetGenomesInDTO inDTO) {
-        List<Genome> genomes;
+    public GetGenomeByIdOutDTO getGenomeById(GetGenomeByIdInDTO inDTO) {
 
-        // ¿Viene speciesId en el query param?
-        if (inDTO.getSpeciesId() != null) {
-            Long speciesId = inDTO.getSpeciesId();
+        GetGenomeByIdOutDTO outDTO = new GetGenomeByIdOutDTO();
 
-            // 1) Si la especie NO existe → 404 con tu GenomeNotFoundException
-            if (!speciesRepository.existsById(speciesId)) {
-                throw new GenomeNotFoundException("Species not found with id: " + speciesId);
-            }
+        // Buscar el genoma por ID (lanza GenomeNotFoundException si no existe)
+        Genome genome = this.genomeRepository.findById(inDTO.getId())
+                .orElseThrow(() -> new GenomeNotFoundException(inDTO.getId()));
 
-            // 2) Traer genomas por especie
-            genomes = genomeRepository.findBySpeciesId(speciesId);
+        // Copiar información del genoma al DTO
+        outDTO.setId(genome.getId());
+        outDTO.setVersion(genome.getVersion());
 
-            // 3) Si no hay genomas para esa especie → 404
-            if (genomes.isEmpty()) {
-                throw new GenomeNotFoundException("No genomes found for species id: " + speciesId);
-            }
-
-        } else {
-            // Sin filtro → traer todos
-            genomes = genomeRepository.findAll();
-
-            // Si la base está vacía → 404
-            if (genomes.isEmpty()) {
-                throw new GenomeNotFoundException("No genomes found in the database.");
-            }
+        // Copiar información de la especie asociada
+        if (genome.getSpecies() != null) {
+            outDTO.setSpeciesId(genome.getSpecies().getId());
+            outDTO.setSpeciesScientificName(genome.getSpecies().getScientificName());
+            outDTO.setSpeciesCommonName(genome.getSpecies().getCommonName());
         }
 
-        // Mapear a DTOs de salida (sin exponer Entities)
-        return genomes.stream()
-                .map(this::toOutDTO)
-                .toList();
+        // Respuesta exitosa
+        outDTO.setSucess(true);
+
+        return outDTO;
     }
-
-    private GenomeOutDTO toOutDTO(Genome genome) {
-        GenomeOutDTO dto = new GenomeOutDTO();
-        dto.setId(genome.getId());
-        dto.setVersion(genome.getVersion());
-        dto.setSpeciesId(genome.getSpecies().getId());
-        dto.setSpeciesScientificName(genome.getSpecies().getScientificName());
-        dto.setSpeciesCommonName(genome.getSpecies().getCommonName());
-        return dto;
-    }
-
-     */
-
 
 }
