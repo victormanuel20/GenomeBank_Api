@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FunctionNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFunctionFound(FunctionNotFoundException ex) {
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.NOT_FOUND)
                 .body(Map.of(
                         "error", "Error al buscar función",
                         "message", ex.getMessage()
@@ -162,5 +162,15 @@ public class GlobalExceptionHandler {
                         "error", "No se encuentra el cromosoma",
                         "message", ex.getMessage()
                 ));}
+
+    @ExceptionHandler(ChromosomeNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotChromosomeFound(ChromosomeNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND) //
+                .body(Map.of(
+                        "error", "No se encuentra el cromosoma",
+                        "message", ex.getMessage()
+                ));
+    }
 
 }
