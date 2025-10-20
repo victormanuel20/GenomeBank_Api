@@ -17,6 +17,12 @@ import java.util.Optional;
 @Repository
 public interface GeneRepository extends JpaRepository<Gene, Long> {
 
+    @Query("SELECT g FROM Gene g WHERE g.chromosome.id = :chromosomeId " +
+            "AND g.startPosition >= :start AND g.endPosition <= :end")
+    List<Gene> findByChromosomeIdAndPositionRange(
+            @Param("chromosomeId") Long chromosomeId,
+            @Param("start") Integer start,
+            @Param("end") Integer end);
 
 
     @Query("SELECT g FROM Gene g WHERE " +

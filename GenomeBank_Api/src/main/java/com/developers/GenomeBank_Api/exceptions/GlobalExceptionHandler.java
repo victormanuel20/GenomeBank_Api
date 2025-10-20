@@ -153,4 +153,14 @@ public class GlobalExceptionHandler {
                         "message", ex.getMessage()
                 ));
     }
+
+    @ExceptionHandler(ChromosomeNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotChromosomeFound(ChromosomeNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND) //
+                .body(Map.of(
+                        "error", "No se encuentra el cromosoma",
+                        "message", ex.getMessage()
+                ));}
+
 }
