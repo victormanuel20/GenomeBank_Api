@@ -27,9 +27,8 @@ public interface IGeneService {
 
     Optional<GeneOutDTO> updateGeneSequence(Long id, UpdateGeneSequenceInDTO updateGeneSequenceInDTO);
 
-    // ===== MÉTODOS PARA RELACIÓN MUCHOS-A-MUCHOS CON FUNCIONES =====
 
-    List<GeneFunctionOutDTO> getGeneFunctions(Long geneId);
+
 
 
 }

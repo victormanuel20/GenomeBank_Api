@@ -1,5 +1,6 @@
 package com.developers.GenomeBank_Api.services.impl;
 
+import com.developers.GenomeBank_Api.exceptions.geneExeptions.GenNotFoundException;
 import com.developers.GenomeBank_Api.models.dto.*;
 
 import java.time.LocalDateTime;
@@ -150,7 +151,11 @@ public class GeneService implements IGeneService {
         List<Gene> genes;
 
         if (chromosomeId != null || symbol != null || start != null || end != null) {
+
             genes = geneRepository.findByFilters(chromosomeId, symbol, start, end);
+            if (genes.isEmpty()) {
+                throw new GenNotFoundException("Gene not found");
+            }
         } else {
             genes = geneRepository.findAll();
         }
@@ -158,6 +163,7 @@ public class GeneService implements IGeneService {
         return genes.stream()
                 .map(this::convertToGeneOutDTO)
                 .collect(Collectors.toList());
+
     }
 
     /**
@@ -242,13 +248,7 @@ public class GeneService implements IGeneService {
                 });
     }
 
-    @Override
-    public List<GeneFunctionOutDTO> getGeneFunctions(Long geneId) {
-        List<GeneFunction> geneFunctions = geneFunctionRepository.findByGeneId(geneId);
-        return geneFunctions.stream()
-                .map(this::convertToGeneFunctionOutDTO)
-                .collect(Collectors.toList());
-    }
+
 
     private GeneFunctionOutDTO convertToGeneFunctionOutDTO(GeneFunction geneFunction) {
         GeneFunctionOutDTO dto = new GeneFunctionOutDTO();

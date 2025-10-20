@@ -5,6 +5,7 @@ import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionInUse
 import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotCreatedException;
 import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotUpdatedException;
+import com.developers.GenomeBank_Api.exceptions.geneExeptions.GenNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.DuplicateSpeciesException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotCreatedException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotFoundException;
@@ -143,5 +144,13 @@ public class GlobalExceptionHandler {
                         "message", ex.getMessage()
                 ));
     }
-
+    @ExceptionHandler(GenNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFoundGen(GenNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND) //  400 (filtro inválido)
+                .body(Map.of(
+                        "error", "Invalid Gen filter",
+                        "message", ex.getMessage()
+                ));
+    }
 }
