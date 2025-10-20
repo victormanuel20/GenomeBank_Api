@@ -17,17 +17,7 @@ import java.util.Optional;
 @Repository
 public interface GeneRepository extends JpaRepository<Gene, Long> {
 
-    List<Gene> findByChromosomeId(Long chromosomeId);
 
-    Optional<Gene> findBySymbol(String symbol);
-
-    @Query("SELECT g FROM Gene g WHERE g.chromosome.id = :chromosomeId " +
-            "AND g.startPosition >= :start AND g.endPosition <= :end")
-    List<Gene> findByChromosomeIdAndPositionRange(
-            @Param("chromosomeId") Long chromosomeId,
-            @Param("start") Long start,
-            @Param("end") Long end
-    );
 
     @Query("SELECT g FROM Gene g WHERE " +
             "(:chromosomeId IS NULL OR g.chromosome.id = :chromosomeId) AND " +

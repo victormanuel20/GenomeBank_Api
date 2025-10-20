@@ -1,6 +1,7 @@
 package com.developers.GenomeBank_Api.services;
 
 import com.developers.GenomeBank_Api.models.dto.*;
+import com.developers.GenomeBank_Api.models.dto.geneDtos.*;
 
 
 import java.util.List;
@@ -25,4 +26,14 @@ public interface IGeneService {
     Optional<String> getGeneSequence(Long id);
 
     Optional<GeneOutDTO> updateGeneSequence(Long id, UpdateGeneSequenceInDTO updateGeneSequenceInDTO);
+
+    List<GeneFunctionOutDTO> getGeneFunctions(Long geneId);
+
+    CreateGeneFunctionOutDTO addFunctionToGene(Long geneId, Long functionId, GeneFunctionInDTO geneFunctionInDTO);
+
+    boolean removeFunctionFromGene(Long geneId, Long functionId);
 }
+
+
+
+

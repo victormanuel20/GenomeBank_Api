@@ -18,15 +18,13 @@ import java.util.Optional;
 @Repository
 public interface GeneFunctionRepository extends JpaRepository<GeneFunction, Long> {
 
-    List<GeneFunction> findByGeneId(Long geneId);
 
-    List<GeneFunction> findByFunctionId(Long functionId);
+    @Query("SELECT gf FROM GeneFunction gf WHERE gf.gene.id = :geneId")
+    List<GeneFunction> findByGeneId(@Param("geneId") Long geneId);
 
     @Query("SELECT gf FROM GeneFunction gf WHERE gf.gene.id = :geneId AND gf.function.id = :functionId")
-    Optional<GeneFunction> findByGeneIdAndFunctionId(
-            @Param("geneId") Long geneId,
-            @Param("functionId") Long functionId
-    );
+    Optional<GeneFunction> findByGeneIdAndFunctionId(@Param("geneId") Long geneId, @Param("functionId") Long functionId);
 
-    void deleteByGeneIdAndFunctionId(Long geneId, Long functionId);
+    boolean existsByGeneIdAndFunctionId(Long geneId, Long functionId);
+
 }
