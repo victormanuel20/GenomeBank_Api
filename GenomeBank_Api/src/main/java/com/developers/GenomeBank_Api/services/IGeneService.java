@@ -31,7 +31,5 @@ public interface IGeneService {
 
     List<GeneFunctionOutDTO> getGeneFunctions(Long geneId);
 
-    CreateGeneFunctionOutDTO assignFunctionToGene(Long geneId, GeneFunctionInDTO geneFunctionInDTO);
 
-    boolean removeFunctionFromGene(Long geneId, Long functionId);
 }

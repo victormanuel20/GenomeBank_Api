@@ -20,7 +20,6 @@ public interface GeneFunctionRepository extends JpaRepository<GeneFunction, Long
 
     List<GeneFunction> findByGeneId(Long geneId);
 
-    List<GeneFunction> findByFunctionId(Long functionId);
 
     @Query("SELECT gf FROM GeneFunction gf WHERE gf.gene.id = :geneId AND gf.function.id = :functionId")
     Optional<GeneFunction> findByGeneIdAndFunctionId(
@@ -28,5 +27,4 @@ public interface GeneFunctionRepository extends JpaRepository<GeneFunction, Long
             @Param("functionId") Long functionId
     );
 
-    void deleteByGeneIdAndFunctionId(Long geneId, Long functionId);
 }

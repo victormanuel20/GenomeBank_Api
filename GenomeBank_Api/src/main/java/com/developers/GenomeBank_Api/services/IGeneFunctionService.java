@@ -11,4 +11,5 @@ import java.util.Set;
  */
 public interface IGeneFunctionService {
     public void createGeneFunctionBatch(Set<GeneFunction> functionGene);
+
 }

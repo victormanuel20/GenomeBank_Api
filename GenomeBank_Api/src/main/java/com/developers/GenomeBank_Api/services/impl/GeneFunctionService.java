@@ -25,4 +25,6 @@ public class GeneFunctionService implements IGeneFunctionService {
     public void createGeneFunctionBatch(Set<GeneFunction> functionGene) {
         this.geneFunctionRepository.saveAll(functionGene);
     }
+
+
 }

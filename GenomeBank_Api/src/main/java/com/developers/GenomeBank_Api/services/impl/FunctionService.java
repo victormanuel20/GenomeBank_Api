@@ -135,5 +135,11 @@ public class FunctionService implements IFunctionService {
 
         return dto;
     }
+    @Override
+    public boolean existsById(Long id) {
+        return functionRepository.existsById(id);
+
+    }
+
 
 }

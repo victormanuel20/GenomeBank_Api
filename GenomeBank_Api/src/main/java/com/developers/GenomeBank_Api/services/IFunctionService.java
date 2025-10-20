@@ -14,6 +14,7 @@ public interface IFunctionService {
     public GetFunctionByIdOutDTO getFunctionById(Long id);
     public CreateFunctionOutDTO createFunction(CreateFunctionInDTO createFunctionInDTO);
     public UpdateFunctionOutDTO updateFunction(Long id, UpdateFunctionInDTO updateFunctionInDTO);
+    public boolean existsById(Long function);
 
     public DeleteFunctionOutDTO deleteFunction(Long id);
 }

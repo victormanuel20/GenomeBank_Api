@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class GeneFunctionDTO {
 
+    private Long Function;
     private String evidence;
 }
