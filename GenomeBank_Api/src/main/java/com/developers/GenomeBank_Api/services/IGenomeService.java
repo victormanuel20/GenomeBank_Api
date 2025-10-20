@@ -16,6 +16,7 @@ public interface IGenomeService {
     public DeleteGenomeOutDTO deleteGenome(Long id);
     List<GenomeOutDTO> getGenomes(GetGenomesInDTO inDTO);
     GetGenomeByIdOutDTO getGenomeById(GetGenomeByIdInDTO inDTO);
+    UpdateGenomeOutDTO updateGenome(Long id, UpdateGenomeInDTO inDTO);
 
 
 }

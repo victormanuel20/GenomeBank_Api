@@ -9,6 +9,8 @@ import com.developers.GenomeBank_Api.exceptions.functionExceptions.FunctionNotUp
 import com.developers.GenomeBank_Api.exceptions.geneExeptions.GenNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.genomeException.GenomeNotFoundException;
 import com.developers.GenomeBank_Api.exceptions.genomeException.InvalidSpeciesFilterException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.InvalidSpeciesForGenomeException;
+import com.developers.GenomeBank_Api.exceptions.genomeException.MissingFieldsException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.DuplicateSpeciesException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotCreatedException;
 import com.developers.GenomeBank_Api.exceptions.speciesExceptions.SpeciesNotFoundException;
@@ -164,6 +166,28 @@ public class GlobalExceptionHandler {
                         "error", "No se encuentra el cromosoma",
                         "message", ex.getMessage()
                 ));}
+
+    // Handler para especie inválida
+    @ExceptionHandler(InvalidSpeciesForGenomeException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidSpeciesForGenome(InvalidSpeciesForGenomeException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST) // 400
+                .body(Map.of(
+                        "error", "Invalid species",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    // Handler para campos faltantes
+    @ExceptionHandler(MissingFieldsException.class)
+    public ResponseEntity<Map<String, Object>> handleMissingFields(MissingFieldsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST) // 400
+                .body(Map.of(
+                        "error", "Missing required fields",
+                        "message", ex.getMessage()
+                ));
+    }
 
 
 

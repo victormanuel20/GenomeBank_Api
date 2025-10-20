@@ -106,6 +106,28 @@ public class GenomeController {
         return ResponseEntity.ok(response); // 200
     }
 
+    /**
+     * Actualiza un genoma existente por su ID.
+     * Solo usuarios con rol ADMIN pueden acceder.
+     * Todos los campos son requeridos (version, speciesId).
+     *
+     * @param id ID del genoma a actualizar
+     * @param inDTO datos actualizados del genoma
+     * @return ResponseEntity con UpdateGenomeOutDTO
+     */
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UpdateGenomeOutDTO> updateGenome(
+            @PathVariable Long id,
+            @RequestBody UpdateGenomeInDTO inDTO) {
+
+        // Llamar al servicio (validaciones manuales dentro del service)
+        UpdateGenomeOutDTO response = genomeService.updateGenome(id, inDTO);
+
+        // Retornar respuesta exitosa
+        return ResponseEntity.ok(response); // 200
+    }
+
 
 
 }
