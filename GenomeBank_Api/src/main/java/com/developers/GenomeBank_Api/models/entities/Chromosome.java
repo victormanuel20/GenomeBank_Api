@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Entidad que representa un cromosoma dentro de un genoma.
  * Cada cromosoma pertenece a un Genome y contiene múltiples Gene genes.
@@ -34,6 +37,6 @@ public class Chromosome {
     @JoinColumn(name = "genome_id")
     private Genome genome;
 
-    /*@OneToMany(mappedBy = "chromosome")
-    private Set<Gene> genes = new HashSet<>();*/
+    @OneToMany(mappedBy = "chromosome")
+    private Set<Gene> genes = new HashSet<>();
 }
